@@ -17,11 +17,28 @@
 <body>
 
     <h3> Batting </h3>
-
     <textarea name="pasteValues" id="pasteValues" cols="100" rows="10"></textarea>
 
-    <div id="output">
-        <table id="outputTable" class="tg">
+    <div id="batting">
+        <table id="battingTable" class="tg">
+          <tr>
+            <th class="tg-header">Name</th>
+            <th class="tg-header">Age</th>
+            <th class="tg-header">Pos</th>
+            <!-- <th class="tg-header">AB</th> -->
+            <th class="tg-header">AVG</th>
+            <th class="tg-header">OBP</th>
+            <th class="tg-header">SLG</th>
+            <!-- <th class="tg-header">Rc27</th> -->
+          </tr>
+        </table>
+    </div>
+
+    <h3> Pitching </h3>
+    <textarea name="pasteValues" id="pasteValues" cols="100" rows="10"></textarea>
+
+    <div id="pitching">
+        <table id="pitchingTable" class="tg">
           <tr>
             <th class="tg-header">Name</th>
             <th class="tg-header">Age</th>
@@ -41,8 +58,6 @@
 
 
     <script type="text/javascript">
-        var output = document.getElementById("output");
-
         var raw = document.getElementById("pasteValues");
         raw.onchange = handleValues;
         console.log(raw.value);
@@ -67,7 +82,7 @@
         function populateTable(data) {
             // data is an array of arrays
             // Find a <table> element with id="myTable":
-            var table = document.getElementById("outputTable");
+            var table = document.getElementById("battingTable");
             // loop through formatted data
             data.forEach(
                 function(player, ind) {  // player is an array of values
@@ -124,7 +139,7 @@
         }
 
         function clearTable() {
-            var table = document.getElementById("outputTable");
+            var table = document.getElementById("battingTable");
             for (var i = table.rows.length - 1; i > 0; i--) {
                 table.deleteRow(i);
             }
