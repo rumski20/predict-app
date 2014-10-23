@@ -7,8 +7,8 @@
 
     <style type="text/css">
     .tg  {border-collapse:collapse;border-spacing:0;border-color:#aaa;}
-    .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#aaa;color:#333;background-color:#fff;border-top-width:1px;border-bottom-width:1px;}
-    .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#aaa;color:#fff;background-color:#f38630;border-top-width:1px;border-bottom-width:1px;}
+    .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#aaa;color:#333;background-color:#fff;border-top-width:1px;border-bottom-width:1px;text-align: center;}
+    .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 12px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#aaa;color:#fff;background-color:#f38630;border-top-width:1px;border-bottom-width:1px;}
     .tg .tg-header{background-color:#6200c9}
     .tg .tg-data{background-color:#cbcefb}
     </style>
@@ -17,14 +17,14 @@
 <body>
 
     <h3> Batting </h3>
-    <textarea name="pasteValues" id="pasteValues" cols="100" rows="10"></textarea>
+    <textarea id="batBin" class="pasteValues" cols="100" rows="10"></textarea>
 
-    <div id="batting">
-        <table id="battingTable" class="tg">
+    <div id="bat">
+        <table id="batTable" class="tg">
           <tr>
             <th class="tg-header">Name</th>
-            <th class="tg-header">Age</th>
-            <th class="tg-header">Pos</th>
+            <th class="tg-header">Dur</th>
+            <th class="tg-header">Health</th>
             <!-- <th class="tg-header">AB</th> -->
             <th class="tg-header">AVG</th>
             <th class="tg-header">OBP</th>
@@ -35,18 +35,18 @@
     </div>
 
     <h3> Pitching </h3>
-    <textarea name="pasteValues" id="pasteValues" cols="100" rows="10"></textarea>
+    <textarea id="pitBin" class="pasteValues" cols="100" rows="10"></textarea>
 
-    <div id="pitching">
-        <table id="pitchingTable" class="tg">
+    <div id="pit">
+        <table id="pitTable" class="tg">
           <tr>
             <th class="tg-header">Name</th>
-            <th class="tg-header">Age</th>
-            <th class="tg-header">Pos</th>
-            <!-- <th class="tg-header">AB</th> -->
-            <th class="tg-header">AVG</th>
-            <th class="tg-header">OBP</th>
-            <th class="tg-header">SLG</th>
+            <th class="tg-header">Dur</th>
+            <th class="tg-header">Health</th>
+            <th class="tg-header">Stamina</th>
+            <th class="tg-header">OPS</th>
+            <th class="tg-header">WHIP</th>
+            <th class="tg-header">FIP</th>
             <!-- <th class="tg-header">Rc27</th> -->
           </tr>
         </table>
@@ -58,9 +58,10 @@
 
 
     <script type="text/javascript">
-        var raw = document.getElementById("pasteValues");
-        raw.onchange = handleValues;
-        console.log(raw.value);
+        var bins = document.getElementsByClassName("pasteValues");
+        for (var i = 0; i < bins.length; ++i) {
+          bins[i].onchange = handleValues;
+        }
 
         function handleValues(event) {
             console.log(this.value);
@@ -75,26 +76,40 @@
                 }
             );
             console.log(valArray);
-            clearTable();
-            populateTable(valArray);
+            // check for which one
+            if (this.id == 'batBin') {
+                clearTable('bat');
+                populateTable(valArray, 'bat');
+            } else {
+                clearTable('pit');
+                populateTable(valArray, 'pit');
+            }
         }
 
-        function populateTable(data) {
+        function populateTable(data, type) {
             // data is an array of arrays
             // Find a <table> element with id="myTable":
-            var table = document.getElementById("battingTable");
+            var table = document.getElementById(type + "Table");
             // loop through formatted data
             data.forEach(
                 function(player, ind) {  // player is an array of values
                     var row = table.insertRow(-1); // insert row
                     row.insertCell(0).innerHTML = player[0];
-                    row.insertCell(1).innerHTML = player[1];
-                    row.insertCell(2).innerHTML = player[2];
-                    row.insertCell(3).innerHTML = roundy(predict(player, 'AVG'), 3);
-                    row.insertCell(4).innerHTML = roundy(predict(player, 'OBP'), 3);
-                    row.insertCell(5).innerHTML = roundy(predict(player, 'SLG'), 3);
-                    // row.insertCell(7).innerHTML = roundy(predict(player, 'Rc27'), 2);
-                })
+                    row.insertCell(1).innerHTML = player[4];
+                    row.insertCell(2).innerHTML = player[5];
+                    if (type == 'bat') {
+                        row.insertCell(3).innerHTML = roundy(predict(player, 'AVG'), 3);
+                        row.insertCell(4).innerHTML = roundy(predict(player, 'OBP'), 3);
+                        row.insertCell(5).innerHTML = roundy(predict(player, 'SLG'), 3);
+                        // row.insertCell(7).innerHTML = roundy(predict(player, 'Rc27'), 2);
+                    } else {  // pitching
+                        row.insertCell(3).innerHTML = player[6];
+                        row.insertCell(4).innerHTML = roundy(predict(player, 'OPS'), 3);
+                        row.insertCell(5).innerHTML = roundy(predict(player, 'WHIP'), 2);
+                        row.insertCell(6).innerHTML = roundy(predict(player, 'FIP'), 2);
+                    }
+                }
+            )
         }
 
         function predict(playerData, stat) {
@@ -104,7 +119,6 @@
                 switch (rating) {
                     case 'CN':
                         predValue += data[stat].CN * parseInt(playerData[6]);
-                        console.log(predValue, data[stat].CN, parseInt(playerData[6]), typeof parseInt(playerData[6]));
                         break;
                     case 'PW':
                         predValue += data[stat].PW * parseInt(playerData[7]);
@@ -121,11 +135,37 @@
                     case 'SP':
                         predValue += data[stat].SP * parseInt(playerData[11]);
                         break;
+                    // these two are shared
                     case 'DU':
                         predValue += data[stat].DU * parseInt(playerData[4]);
                         break;
                     case 'HE':
                         predValue += data[stat].HE * parseInt(playerData[5]);
+                        break;
+                    // end shared
+                    case 'CT':
+                        predValue += data[stat].CT * parseInt(playerData[7]);
+                        break;
+                    case 'LH.1':
+                        predValue += data[stat]['LH.1'] * parseInt(playerData[8]);
+                        break;
+                    case 'RH.1':
+                        predValue += data[stat]['RH.1'] * parseInt(playerData[9]);
+                        break;
+                    case 'VE':
+                        predValue += data[stat].VE * parseInt(playerData[10]);
+                        break;
+                    case 'GB':
+                        predValue += data[stat].GB * parseInt(playerData[11]);
+                        break;
+                    case 'P1':
+                        predValue += data[stat].P1 * parseInt(playerData[12]);
+                        break;
+                    case 'P2':
+                        predValue += data[stat].P2 * parseInt(playerData[13]);
+                        break;
+                    case 'P3':
+                        predValue += data[stat].P3 * parseInt(playerData[14]);
                         break;
                 }
                 console.log(rating, predValue);
@@ -138,8 +178,8 @@
             return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
         }
 
-        function clearTable() {
-            var table = document.getElementById("battingTable");
+        function clearTable(type) {
+            var table = document.getElementById(type + "Table");
             for (var i = table.rows.length - 1; i > 0; i--) {
                 table.deleteRow(i);
             }
@@ -195,6 +235,38 @@
                 BE          : 0.11927317,
                 DU          : 0.11651043,
                 HE          : 0.15890700
+            },
+            WHIP : {
+                Intercept   : 2.5857330166,
+                DU          :-0.0011687654,
+                CT          :-0.0046942348,
+                'LH.1'        :-0.0020667296,
+                'RH.1'        :-0.0067933132,
+                VE          : 0.0003267633,
+                P1          :-0.0017138117,
+                P3          :-0.0009074792
+            },
+            OPS : {
+                Intercept   : 1.3236697846,
+                DU          :-0.0006305853,
+                CT          :-0.0010492014,
+                'LH.1'        :-0.0011208079,
+                'RH.1'        :-0.0033774017,
+                GB          :-0.0002862791,
+                P1          :-0.0010271911,
+                P2          :-0.0005908102,
+                P3          :-0.0003365155
+            },
+            FIP : {
+                Intercept   : 9.587534068,
+                DU          :-0.001909893,
+                CT          :-0.017720196,
+                'LH.1'        :-0.006897648,
+                'RH.1'        :-0.025105918,
+                VE          :-0.003104722,
+                GB          :-0.003761467,
+                P1          :-0.008026491,
+                P2          :-0.005168625
             }
         }
 
