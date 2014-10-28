@@ -66,12 +66,14 @@
             tempArray.forEach(
                 function(val, ind) {
                     if (val.length > 1) {
-                        valArray.push(val.split('\t'));
+                        // alter array based on it's sequence
+                        // and add it to list of lists
+                        valArray.push(cleanUpValues(val.split('\t')));
                     }
                 }
             );
             // alter array depending on where it was copied from
-            valArray = cleanUpValues(valArray);
+            // valArray = cleanUpValues(valArray);
 
             console.log(valArray);
             // check for which one
@@ -188,25 +190,32 @@
 // Player   Frn Pos %   Age  Durability  Health  Contact     Power   Batting Versus Left-Handed Pitching     Batting Versus Right-Handed Pitching    Batting Eye     Base Running    Speed   Range   Glove   Arm Strength    Arm Accuracy    Pitch Calling  Yr  $   Action
 
         function cleanUpValues(playerData) {
+            console.log(playerData);
+            var countAlpha = 0;
             // playerData is an array of values
-            playerData.forEach(
-                function (value, index) {
-                    // normal
-                    if (/^\d+$/.test(playerData[index]) && index == 1) {
-                        return playerData;
-                    }
-                    // IFA
-                    else if (/^\d+$/.test(playerData[index]) && index == 2) {
-                        playerData.splice(3, 0, ""); // add empty slot to array
-                        return playerData;
-                    }
-                    // waiver, trade list
-                    else {
+            for (var i = 0; i < playerData.length; i++) {
+                console.log(playerData[i]);
+                // normal
+                if (/^\d+$/.test(playerData[i]) && i == 1) {
+                    console.log(playerData);
+                    return playerData;
+                }
+                // IFA
+                else if (/^\d+$/.test(playerData[i]) && i == 2) {
+                    playerData.splice(3, 0, ""); // add empty slot to array
+                    console.log(playerData);
+                    return playerData;
+                }
+                // waiver, trade list
+                if (!/^\d+$/.test(playerData[i])) {
+                    countAlpha ++;
+                    if (countAlpha > 2) {
                         playerData.splice(3, 1); // remove percentage from arr
+                        console.log(playerData);
                         return playerData;
                     }
                 }
-            );
+            }
         }
 
         var data = {
