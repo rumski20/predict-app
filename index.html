@@ -70,6 +70,9 @@
                     }
                 }
             );
+            // alter array depending on where it was copied from
+            valArray = cleanUpValues(valArray);
+
             console.log(valArray);
             // check for which one
             if (this.id == 'batBin') {
@@ -178,6 +181,33 @@
 // Name (bats) Age Pos %   Durability  Health  Contact Power   Batting Versus Left-Handed Pitching Batting Versus Right-Handed Pitching    Batting Eye Speed   Range   Glove   Arm Strength    Arm Accuracy    Pitch Calling   $
 // Rule 5 Draftee Jeffrey Beckett (S)  26  1B  100 77  44  29  88  41  57  79  46  39  28  30  36  1   $327K
 // Ernest Coffey (L)   25  LF  100 70  47  80  45  69  57  57  23  43  33  41  40  18  $55K
+
+// Player  Pos Age Durability  Health  Stamina Control Effectiveness Versus Left-Handed Batting    Effectiveness Versus Right-Handed Batting   Velocity    Groundball/Flyball Tendency Pitch 1 Pitch 2 Pitch 3 Pitch 4 Pitch 5 $   Action
+// Esteban Volquez (L) P   21  34  100 82  41  49  40  90  48  69  64  46  34  42  $300K   Negotiate
+
+// Player   Frn Pos %   Age  Durability  Health  Contact     Power   Batting Versus Left-Handed Pitching     Batting Versus Right-Handed Pitching    Batting Eye     Base Running    Speed   Range   Glove   Arm Strength    Arm Accuracy    Pitch Calling  Yr  $   Action
+
+        function cleanUpValues(playerData) {
+            // playerData is an array of values
+            playerData.forEach(
+                function (value, index) {
+                    // normal
+                    if (/^\d+$/.test(playerData[index]) && index == 1) {
+                        return playerData;
+                    }
+                    // IFA
+                    if else (/^\d+$/.test(playerData[index]) && index == 2) {
+                        playerData.splice(3, 0, ""); // add empty slot to array
+                        return playerData;
+                    }
+                    // waiver, trade list
+                    else {
+                        playerData.splice(3, 1); // remove percentage from arr
+                        return playerData;
+                    }
+                }
+            );
+        }
 
         var data = {
             AB : {
