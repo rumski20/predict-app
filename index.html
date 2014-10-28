@@ -196,7 +196,7 @@
                         return playerData;
                     }
                     // IFA
-                    if else (/^\d+$/.test(playerData[index]) && index == 2) {
+                    else if (/^\d+$/.test(playerData[index]) && index == 2) {
                         playerData.splice(3, 0, ""); // add empty slot to array
                         return playerData;
                     }
