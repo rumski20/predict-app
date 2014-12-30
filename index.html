@@ -104,8 +104,7 @@
         </table>
     </div>
 
-    <span id="sortdown" class="fontawesome-sort-down"></span>
-    <span id="sortup" class="fontawesome-sort-up"></span>
+
 
     <script type="text/javascript">
 
@@ -122,16 +121,25 @@
         cols[i].onclick = headerSortHandler;
     }
 
+    // create caret nodes
+    var caretUp = document.createElement('span');
+    caretUp.className = "fontawesome-sort-up";
+    var caretDown = document.createElement('span');
+    caretDown.className = "fontawesome-sort-down";
+
 
     function headerSortHandler(event) {
         event.stopPropagation();
         console.log(this);
+        // add caret indicators, get direction of sort
+        var dir = indicateWithCaret(this);
         // get parent
         var table = getTableParent(this);
         // get column index
         var colIndex = Array.prototype.indexOf.call(this.parentNode.children, this);
         // sort table
-        sortTable(table, colIndex, true);
+        sortTable(table, colIndex, dir);
+
     }
 
     function handleValues(event) {
@@ -323,7 +331,22 @@
             } else {
                 parent = parent.parentNode;
             }
+        }
+    }
 
+    // add or remove carets as necessary
+    function indicateWithCaret(el) {
+        var direction;
+        // check if header already has one
+        if ( el.contains(caretUp) ) {
+            el.replaceChild(caretDown, caretUp);
+            return direction = true;
+        } else if ( el.contains(caretDown) ) {
+            el.replaceChild(caretUp, caretDown);
+            return direction = false;
+        } else {
+            el.appendChild(caretDown);
+            return direction = true;
         }
     }
 
