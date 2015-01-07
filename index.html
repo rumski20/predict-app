@@ -306,11 +306,11 @@
     // sort table by row
     // http://stackoverflow.com/questions/14267781/sorting-html-table-with-js
     function sortTable(table, col, reverse) {
-        console.log(table, col, reverse);
+        // console.log(table, col, reverse);
         var tb = table.tBodies[0], // use `<tbody>` to ignore `<thead>` and `<tfoot>` rows
         tr = Array.prototype.slice.call(tb.rows, 0), // put rows into array
         i;
-        console.log(tb);
+        // console.log(tb);
         reverse = -((+reverse) || -1);
         tr = tr.sort(function(a, b) { // sort rows
             return reverse // `-1 *` if want opposite order
@@ -357,16 +357,43 @@
         var rainbow = new Rainbow();
         rainbow.setSpectrum('#fd9196', '#9aff9b');
         var rows = table.rows.length - 1;
-        rainbow.setNumberRange(1, rows);
+        // normalize values along spectrum (0-100)
+        var scaledVals = rescale(table, column, rows);
         // loop through cells and change background color
         // start at one to skip the header
         for (var i = 1; i <= rows; i++) {
             // get hex color
-            var hex = '#' + rainbow.colourAt(i);
+            var hex = '#' + rainbow.colourAt(scaledVals[i-1]);
             // get cell
             var cell = table.getElementsByTagName('tr')[i].getElementsByTagName('td')[column];
             cell.style.background = hex;
         }
+    }
+
+    // rescales the array of values to the range of 0-100
+    function rescale(table, column, numRows) {
+        var colStats = getColumnValues(table, column, numRows),
+            output = [],
+            newMax = 100,
+            newMin = 0;
+        for( var i=0; i<numRows; i++ ) {
+            var newVal = (newMax - newMin) / (colStats.max - colStats.min) * (colStats.vals[i] - colStats.min) + newMin;
+            output.push(newVal);
+        }
+        // console.log(colStats, output);
+        return output;
+    }
+
+    function getColumnValues(table, column, numRows) {
+        var vals = [],
+            stats = {};
+        for ( var i=1; i<=numRows; i++ ) {
+            vals.push(parseFloat(table.getElementsByTagName('tr')[i].getElementsByTagName('td')[column].innerHTML));
+        }
+        stats.vals = vals;
+        stats.max = Math.max.apply( Math, vals ),
+        stats.min = Math.min.apply( Math, vals );
+        return stats;
     }
 
 
