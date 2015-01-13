@@ -15,6 +15,11 @@
       font-family: 'FontAwesome', sans-serif;
     }
 
+    html, textarea, table {
+        background-color: black;
+        color: rgb(180, 186, 218);
+    }
+
     .tg {
         border-collapse: collapse;
         border-spacing: 0;
@@ -29,8 +34,6 @@
         overflow: hidden;
         word-break: normal;
         border-color: #aaa;
-        color: #333;
-        background-color: #fff;
         border-top-width: 1px;
         border-bottom-width: 1px;
         text-align: center;
@@ -45,7 +48,6 @@
         overflow: hidden;
         word-break: normal;
         border-color: #aaa;
-        color: #fff;
         background-color: #f38630;
         border-top-width: 1px;
         border-bottom-width: 1px;
@@ -53,9 +55,9 @@
     .tg .tg-header {
         background-color: #6200c9
     }
-    .tg .tg-data {
+/*    .tg .tg-data {
         background-color: #cbcefb
-    }
+    }*/
     </style>
 
 </head>
@@ -215,28 +217,28 @@
             switch (rating) {
                 // batting
                 case 'DU':
-                    predValue += data[stat].DU * parseInt(playerData[4]);
+                    predValue += data[stat].DU * parseInt(playerData[3]);
                     break;
                 case 'HE':
-                    predValue += data[stat].HE * parseInt(playerData[5]);
+                    predValue += data[stat].HE * parseInt(playerData[4]);
                     break;
                 case 'CN':
-                    predValue += data[stat].CN * parseInt(playerData[6]);
+                    predValue += data[stat].CN * parseInt(playerData[5]);
                     break;
                 case 'PW':
-                    predValue += data[stat].PW * parseInt(playerData[7]);
+                    predValue += data[stat].PW * parseInt(playerData[6]);
                     break;
                 case 'LH':
-                    predValue += data[stat].LH * parseInt(playerData[8]);
+                    predValue += data[stat].LH * parseInt(playerData[7]);
                     break;
                 case 'RH':
-                    predValue += data[stat].RH * parseInt(playerData[9]);
+                    predValue += data[stat].RH * parseInt(playerData[8]);
                     break;
                 case 'BE':
-                    predValue += data[stat].BE * parseInt(playerData[10]);
+                    predValue += data[stat].BE * parseInt(playerData[9]);
                     break;
                 case 'SP':
-                    predValue += data[stat].SP * parseInt(playerData[11]);
+                    predValue += data[stat].SP * parseInt(playerData[10]);
                     break;
                 // pitching
                 case 'CT':
@@ -285,7 +287,7 @@
     }
 
     // GM office = Player, Age, Pos, %
-    // FA = Player, Frn, Pos, Age, Ends with Negotiate...
+    // FA, trade block = Player, Frn, Pos, Age
     // Waiver = Player, Frn, Pos, %, Age
     // IFA = Player, Pos, Age
     // Player Search = Player, Lvl, Frn, Pos, %, Age
@@ -320,17 +322,17 @@
         }
         // check for FA, Waiver
         else if (posArr.indexOf(playerData[2]) > -1) {
-            // check for FA
-            if (playerData.slice(-1)[0].indexOf("Negotiate") > -1) {
-                playerData.splice(1,1);  // remove frn
-                return playerData;
-            } else if (/\d+/.test(playerData[0])) { //Am Draft
+            // //Am Draft
+            if (/\d+/.test(playerData[0])) {
                 playerData.splice(0,1);
                 playerData.splice(2,2);
                 return playerData;
-            } else {  // Waiver
+            } else if (playerData.length == 22) { // Waiver
                 playerData.splice(1,1);  // remove %
                 playerData.splice(2,1);
+                return playerData;
+            } else {  // FA, trades
+                playerData.splice(1,1);  // remove frn
                 return playerData;
             }
         } else {
@@ -402,6 +404,7 @@
             // get cell
             var cell = table.getElementsByTagName('tr')[i].getElementsByTagName('td')[column];
             cell.style.background = hex;
+            cell.style.color = '#000000';
         }
     }
 
