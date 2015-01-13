@@ -70,13 +70,16 @@
             <thead>
                 <tr>
                     <th class="tg-header">Name</th>
+                    <th class="tg-header">Pos</th>
                     <th class="tg-header">Dur</th>
                     <th class="tg-header">Health</th>
                     <!-- <th class="tg-header">AB</th> -->
                     <th class="tg-header">AVG</th>
                     <th class="tg-header">OBP</th>
                     <th class="tg-header">SLG</th>
-                    <!-- <th class="tg-header">Rc27</th> -->
+                    <th class="tg-header">OPS</th>
+                    <th class="tg-header">SecA</th>
+                    <th class="tg-header">RC</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -91,12 +94,14 @@
             <thead>
                 <tr>
                     <th class="tg-header">Name</th>
+                    <th class="tg-header">Pos</th>
                     <th class="tg-header">Dur</th>
                     <th class="tg-header">Health</th>
                     <th class="tg-header">Stamina</th>
                     <th class="tg-header">OPS</th>
                     <th class="tg-header">WHIP</th>
                     <th class="tg-header">FIP</th>
+                    <th class="tg-header">SO/BB</th>
                     <!-- <th class="tg-header">Rc27</th> -->
                 </tr>
             </thead>
@@ -153,7 +158,9 @@
                 if (val.length > 1) {
                     // alter array based on it's sequence
                     // and add it to list of lists
-                    valArray.push(cleanUpValues(val.split('\t')));
+                    var splitVals = val.split(/\t/);
+                    console.log(splitVals);
+                    valArray.push(cleanUpValues(splitVals));
                 }
             }
         );
@@ -180,18 +187,22 @@
             function(player, ind) { // player is an array of values
                 var row = table.insertRow(-1); // insert row
                 row.insertCell(0).innerHTML = player[0];
-                row.insertCell(1).innerHTML = player[4];
-                row.insertCell(2).innerHTML = player[5];
+                row.insertCell(1).innerHTML = player[1];
+                row.insertCell(2).innerHTML = player[3];
+                row.insertCell(3).innerHTML = player[4];
                 if (type == 'bat') {
-                    row.insertCell(3).innerHTML = roundy(predict(player, 'AVG'), 3);
-                    row.insertCell(4).innerHTML = roundy(predict(player, 'OBP'), 3);
-                    row.insertCell(5).innerHTML = roundy(predict(player, 'SLG'), 3);
-                    // row.insertCell(7).innerHTML = roundy(predict(player, 'Rc27'), 2);
+                    row.insertCell(4).innerHTML = roundy(predict(player, 'AVG'), 3);
+                    row.insertCell(5).innerHTML = roundy(predict(player, 'OBP'), 3);
+                    row.insertCell(6).innerHTML = roundy(predict(player, 'SLG'), 3);
+                    row.insertCell(7).innerHTML = roundy(parseFloat(row.cells[5].innerHTML) + parseFloat(row.cells[6].innerHTML), 3);
+                    row.insertCell(8).innerHTML = roundy(predict(player, 'SecA'), 3);
+                    row.insertCell(9).innerHTML = roundy(predict(player, 'RC'), 1);
                 } else { // pitching
-                    row.insertCell(3).innerHTML = player[6];
-                    row.insertCell(4).innerHTML = roundy(predict(player, 'OPS'), 3);
-                    row.insertCell(5).innerHTML = roundy(predict(player, 'WHIP'), 2);
-                    row.insertCell(6).innerHTML = roundy(predict(player, 'FIP'), 2);
+                    row.insertCell(4).innerHTML = player[5];
+                    row.insertCell(5).innerHTML = roundy(predict(player, 'OPS'), 3);
+                    row.insertCell(6).innerHTML = roundy(predict(player, 'WHIP'), 2);
+                    row.insertCell(7).innerHTML = roundy(predict(player, 'FIP'), 2);
+                    row.insertCell(8).innerHTML = roundy(predict(player, 'SOBB'), 2);
                 }
             }
         )
@@ -202,6 +213,13 @@
         var predValue = data[stat].Intercept;
         for (var rating in data[stat]) {
             switch (rating) {
+                // batting
+                case 'DU':
+                    predValue += data[stat].DU * parseInt(playerData[4]);
+                    break;
+                case 'HE':
+                    predValue += data[stat].HE * parseInt(playerData[5]);
+                    break;
                 case 'CN':
                     predValue += data[stat].CN * parseInt(playerData[6]);
                     break;
@@ -220,32 +238,33 @@
                 case 'SP':
                     predValue += data[stat].SP * parseInt(playerData[11]);
                     break;
+                // pitching
                 case 'CT':
-                    predValue += data[stat].CT * parseInt(playerData[7]);
+                    predValue += data[stat].CT * parseInt(playerData[6]);
                     break;
                 case 'LH.1':
-                    predValue += data[stat]['LH.1'] * parseInt(playerData[8]);
+                    predValue += data[stat]['LH.1'] * parseInt(playerData[7]);
                     break;
                 case 'RH.1':
-                    predValue += data[stat]['RH.1'] * parseInt(playerData[9]);
+                    predValue += data[stat]['RH.1'] * parseInt(playerData[8]);
                     break;
                 case 'VE':
-                    predValue += data[stat].VE * parseInt(playerData[10]);
+                    predValue += data[stat].VE * parseInt(playerData[9]);
                     break;
                 case 'GB':
-                    predValue += data[stat].GB * parseInt(playerData[11]);
+                    predValue += data[stat].GB * parseInt(playerData[10]);
                     break;
                 case 'P1':
-                    predValue += data[stat].P1 * parseInt(playerData[12]);
+                    predValue += data[stat].P1 * parseInt(playerData[11]);
                     break;
                 case 'P2':
-                    predValue += data[stat].P2 * parseInt(playerData[13]);
+                    predValue += data[stat].P2 * parseInt(playerData[12]);
                     break;
                 case 'P3':
-                    predValue += data[stat].P3 * parseInt(playerData[14]);
+                    predValue += data[stat].P3 * parseInt(playerData[13]);
                     break;
                 case 'P5':
-                    predValue += data[stat].P5 * parseInt(playerData[16]);
+                    predValue += data[stat].P5 * parseInt(playerData[14]);
                     break;
             }
             console.log(rating, predValue);
@@ -265,41 +284,57 @@
         }
     }
 
-    // Name (bats) Age Pos %   Durability  Health  Contact Power   Batting Versus Left-Handed Pitching Batting Versus Right-Handed Pitching    Batting Eye Speed   Range   Glove   Arm Strength    Arm Accuracy    Pitch Calling   $
-    // Rule 5 Draftee Jeffrey Beckett (S)  26  1B  100 77  44  29  88  41  57  79  46  39  28  30  36  1   $327K
-    // Ernest Coffey (L)   25  LF  100 70  47  80  45  69  57  57  23  43  33  41  40  18  $55K
+    // GM office = Player, Age, Pos, %
+    // FA = Player, Frn, Pos, Age, Ends with Negotiate...
+    // Waiver = Player, Frn, Pos, %, Age
+    // IFA = Player, Pos, Age
+    // Player Search = Player, Lvl, Frn, Pos, %, Age
+    // Trades = Player, Lvl, Pos, %, Age
+    // Am Draft = Rnk, Player, Pos, B, T, Age
 
-    // Player  Pos Age Durability  Health  Stamina Control Effectiveness Versus Left-Handed Batting    Effectiveness Versus Right-Handed Batting   Velocity    Groundball/Flyball Tendency Pitch 1 Pitch 2 Pitch 3 Pitch 4 Pitch 5 $   Action
-    // Esteban Volquez (L) P   21  34  100 82  41  49  40  90  48  69  64  46  34  42  $300K   Negotiate
-
-    // Player   Frn Pos %   Age  Durability  Health  Contact     Power   Batting Versus Left-Handed Pitching     Batting Versus Right-Handed Pitching    Batting Eye     Base Running    Speed   Range   Glove   Arm Strength    Arm Accuracy    Pitch Calling  Yr  $   Action
+    // Try to return in format: Player, Pos, Age
+    // swap position in array: list[x] = [list[y],list[y]=list[x]][0]
 
     function cleanUpValues(playerData) {
+        var levelArr = ['RL','LoA','HiA','AA','AAA','ML'],
+            posArr = ['C','1B','2B','SS','3B','LF','CF','RF','DH'];
         console.log(playerData);
-        var countAlpha = 0;
-        // playerData is an array of values
-        for (var i = 0; i < playerData.length; i++) {
-            console.log(playerData[i]);
-            // normal
-            if (/^\d+$/.test(playerData[i]) && i == 1) {
-                console.log(playerData);
+        // check for GM office
+        if (/\d{2}/.test(playerData[1])) {
+            playerData[2] = [playerData[1], playerData[1] = playerData[2]][0];
+            playerData.splice(3,1);
+            return playerData;
+        }
+        // player search, trades
+        else if (levelArr.indexOf(playerData[1]) > -1) {
+            playerData.splice(1,1);  // remove lvl
+            // trades
+            if (posArr.indexOf(playerData[1]) > -1) {
+                playerData.splice(2,1);
+                return playerData;
+            } else {  // player search
+                playerData.splice(1,1);
+                playerData.splice(2,1);
                 return playerData;
             }
-            // IFA
-            else if (/^\d+$/.test(playerData[i]) && i == 2) {
-                playerData.splice(3, 0, ""); // add empty slot to array
-                console.log(playerData);
+        }
+        // check for FA, Waiver
+        else if (posArr.indexOf(playerData[2]) > -1) {
+            // check for FA
+            if (playerData.slice(-1)[0].indexOf("Negotiate") > -1) {
+                playerData.splice(1,1);  // remove frn
+                return playerData;
+            } else if (/\d+/.test(playerData[0])) { //Am Draft
+                playerData.splice(0,1);
+                playerData.splice(2,2);
+                return playerData;
+            } else {  // Waiver
+                playerData.splice(1,1);  // remove %
+                playerData.splice(2,1);
                 return playerData;
             }
-            // waiver, trade list
-            if (!/^\d+$/.test(playerData[i])) {
-                countAlpha++;
-                if (countAlpha > 2) {
-                    playerData.splice(3, 1); // remove percentage from arr
-                    console.log(playerData);
-                    return playerData;
-                }
-            }
+        } else {
+            return playerData;
         }
     }
 
@@ -400,6 +435,7 @@
 
 
     // weights driving calculations
+    // Batting updated through season 32, 10-1-2015
     var data = {
         AB: {
             Intercept: 27.1665018,
@@ -411,68 +447,89 @@
             DU: 1.1555163,
             HE: 0.9948427
         },
-        AVG: { // Rsq: 0.2865625
-            Intercept: 0.1728766596,
-            CN: 0.0003839499,
-            LH: 0.0003243733,
-            RH: 0.0004827432,
-            BE: 0.0003075926
+        AVG: { // Rsq: 0.3395178
+            Intercept  : 0.1701399467,
+            CN           : 0.0004386879,
+            LH           : 0.0003982051,
+            RH           : 0.0004289617,
+            BE           : 0.0001952405
         },
-        OBP: { // Rsq: 0.4673254
-            Intercept: 0.1956397915,
-            CN: 0.0005087604,
-            LH: 0.0002599466,
-            RH: 0.0003976977,
-            BE: 0.0009669389
+        OBP: { // Rsq: 0.5163727
+            Intercept   : 0.1970634,
+            CN          : 0.0006031644,
+            LH          : 0.0002782980,
+            RH          : 0.0003509777,
+            BE          : 0.0008905244
         },
-        SLG: { // Rsq: 0.6130545
-            Intercept: 0.0974892089,
-            CN: 0.0006297989,
-            PW: 0.0026319232,
-            LH: 0.0004079642,
-            RH: 0.0007703233,
-            BE: 0.0005397229,
-            SP: 0.0003424358
+        SLG: { // Rsq: 0.6481326
+            Intercept   : 0.0929444496,
+            CN          : 0.0007277518,
+            PW          : 0.0028044436,
+            LH          : 0.0006401743,
+            RH          : 0.0007081741,
+            BE          : 0.0003776163,
+            SP          : 0.0004331909
         },
-        Rc27: {
-            Intercept: 21.89611467,
-            CN: 0.12340745,
-            PW: 0.09589677,
-            LH: 0.10247291,
-            RH: 0.05994001,
-            BE: 0.11927317,
-            DU: 0.11651043,
-            HE: 0.15890700
+        ISO: { // Rsq: 0.7757063
+            Intercept  : -0.0864614447,
+            CN         :  0.0002902661,
+            PW         :  0.0027723559,
+            LH         :  0.0002556802,
+            RH         :  0.0002588279,
+            SP         :  0.0004323230
         },
-        WHIP: { // Adj. Rsq: 0.2841573
-            Intercept: 2.5978237473,
-            CT: -0.0047886338,
-            'LH.1': -0.0021603048,
-            'RH.1': -0.0068806281,
-            VE: 0.0003737825,
-            P1: -0.0016857023,
-            P2: -0.0011738003
+        SecA: { // Rsq: 0.6908993
+            Intercept  : -0.0858520763,
+            CN         :  0.0006604749,
+            PW         :  0.0024770764,
+            RH         :  0.0003379264,
+            BE         :  0.0015210492,
+            SP         :  0.0008601810
         },
-        OPS: { // Adj. Rsq: 0.313896
-            Intercept: 1.2937001155,
-            ST: 0.0002060046,
-            CT: -0.0010762807,
-            'LH.1': -0.0011325101,
-            'RH.1': -0.0034113419,
-            GB: -0.0002711084,
-            P1: -0.0011536711,
-            P2: -0.0006881799
+        RC: {  // Rsq: 0.5299413
+            Intercept  : -113.9833290,
+            CN         :    0.4938149,
+            PW         :    0.4891483,
+            LH         :    0.2271922,
+            RH         :    0.2816190,
+            BE         :    0.3954458,
+            SP         :    0.2665498,
+            DU         :    0.5883959
         },
-        FIP: { // Adj. Rsq: 0.300334
-            Intercept: 9.619598945,
-            CT: -0.017957664,
-            'LH.1': -0.006937385,
-            'RH.1': -0.025560365,
-            VE: -0.003169440,
-            GB: -0.003670697,
-            P1: -0.008737261,
-            P2: -0.005429195,
-            P5: 0.001920657
+
+        // Pitching
+        WHIP: { // Adj. Rsq: 0.2701603
+            Intercept  :  2.2983046294,
+            CT         : -0.0048458610,
+            'LH.1'     : -0.0030527198,
+            'RH.1'     : -0.0036916877,
+            GB         : -0.0008673665
+        },
+        SOBB: { // Adj. Rsq: 0.394486
+            Intercept  : -0.796073708,
+            CT         :  0.026859967,
+            'LH.1'     :  0.005046350,
+            'RH.1'     :  0.004983520,
+            VE         :  0.006553650,
+            P4         :  0.001688970
+        },
+        OPS: { // Adj. Rsq: 0.2992437
+            Intercept  :  1.1699163374,
+            CT         : -0.0011175340,
+            'LH.1'     : -0.0015303433,
+            'RH.1'     : -0.0023356919,
+            GB         : -0.0006109197,
+            P2         : -0.0005866027
+        },
+        FIP: { // Adj. Rsq: 0.329838
+            Intercept  :  8.142510103,
+            CT         : -0.017614453,
+            'LH.1'     : -0.010785826,
+            'RH.1'     : -0.016656345,
+            VE         : -0.002768150,
+            GB         : -0.007942627,
+            P1         :  0.007535767,
+            P2         : -0.005108849,
         }
     }
 
