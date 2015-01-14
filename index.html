@@ -162,7 +162,10 @@
                     // and add it to list of lists
                     var splitVals = val.split(/\t/);
                     console.log(splitVals);
-                    valArray.push(cleanUpValues(splitVals));
+                    // check for full players
+                    if (splitVals.length > 1) {
+                        valArray.push(cleanUpValues(splitVals));
+                    }
                 }
             }
         );
@@ -299,7 +302,7 @@
 
     function cleanUpValues(playerData) {
         var levelArr = ['RL','LoA','HiA','AA','AAA','ML'],
-            posArr = ['C','1B','2B','SS','3B','LF','CF','RF','DH'];
+            posArr = ['C','1B','2B','SS','3B','LF','CF','RF','DH','P'];
         console.log(playerData);
         // check for GM office
         if (/\d{2}/.test(playerData[1])) {
