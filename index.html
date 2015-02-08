@@ -308,6 +308,7 @@
         if (/\d{2}/.test(playerData[1])) {
             playerData[2] = [playerData[1], playerData[1] = playerData[2]][0];
             playerData.splice(3,1);
+            console.log(playerData);
             return playerData;
         }
         // player search, trades
@@ -316,29 +317,35 @@
             // trades
             if (posArr.indexOf(playerData[1]) > -1) {
                 playerData.splice(2,1);
+                console.log(playerData);
                 return playerData;
             } else {  // player search
                 playerData.splice(1,1);
                 playerData.splice(2,1);
+                console.log(playerData);
                 return playerData;
             }
         }
         // check for FA, Waiver
         else if (posArr.indexOf(playerData[2]) > -1) {
             // //Am Draft
-            if (/\d+/.test(playerData[0])) {
+            if (/^\\d+$/.test(playerData[0])) {
                 playerData.splice(0,1);
                 playerData.splice(2,2);
+                console.log(playerData);
                 return playerData;
-            } else if (playerData.length == 22) { // Waiver
+            } else if (playerData.length >= 21) { // Waiver
                 playerData.splice(1,1);  // remove %
                 playerData.splice(2,1);
+                console.log(playerData);
                 return playerData;
             } else {  // FA, trades
                 playerData.splice(1,1);  // remove frn
+                console.log(playerData);
                 return playerData;
             }
         } else {
+            console.log(playerData);
             return playerData;
         }
     }
