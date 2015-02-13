@@ -329,9 +329,9 @@
         // check for FA, Waiver
         else if (posArr.indexOf(playerData[2]) > -1) {
             // //Am Draft
-            if (/^\\d+$/.test(playerData[0])) {
+            if (/^\d+$/.test(playerData[0])) {
                 playerData.splice(0,1);
-                playerData.splice(2,2);
+                // playerData.splice(2,2);
                 console.log(playerData);
                 return playerData;
             } else if (playerData.length >= 21) { // Waiver
