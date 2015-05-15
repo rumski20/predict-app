@@ -100,10 +100,10 @@
                     <th class="tg-header">Dur</th>
                     <th class="tg-header">Health</th>
                     <th class="tg-header">Stamina</th>
-                    <th class="tg-header">OPS</th>
-                    <th class="tg-header">WHIP</th>
+                    <!-- <th class="tg-header">OBP</th> -->
                     <th class="tg-header">FIP</th>
                     <th class="tg-header">SO/BB</th>
+                    <th class="tg-header">WAR</th>
                     <!-- <th class="tg-header">Rc27</th> -->
                 </tr>
             </thead>
@@ -204,10 +204,9 @@
                     row.insertCell(9).innerHTML = roundy(predict(player, 'RC'), 1);
                 } else { // pitching
                     row.insertCell(4).innerHTML = player[5];
-                    row.insertCell(5).innerHTML = roundy(predict(player, 'OPS'), 3);
-                    row.insertCell(6).innerHTML = roundy(predict(player, 'WHIP'), 2);
-                    row.insertCell(7).innerHTML = roundy(predict(player, 'FIP'), 2);
-                    row.insertCell(8).innerHTML = roundy(predict(player, 'SOBB'), 2);
+                    row.insertCell(5).innerHTML = roundy(predict(player, 'FIP'), 2);
+                    row.insertCell(6).innerHTML = roundy(predict(player, 'SOBB'), 2);
+                    row.insertCell(7).innerHTML = roundy(predict(player, 'WAR'), 2);
                 }
             }
         )
@@ -244,6 +243,9 @@
                     predValue += data[stat].SP * parseInt(playerData[10]);
                     break;
                 // pitching
+                case 'ST':
+                    predValue += data[stat].ST * parseInt(playerData[5]);
+                    break;
                 case 'CT':
                     predValue += data[stat].CT * parseInt(playerData[6]);
                     break;
@@ -331,7 +333,7 @@
             // //Am Draft
             if (/^\d+$/.test(playerData[0])) {
                 playerData.splice(0,1);
-                // playerData.splice(2,2);
+                // playerData.splice(2,1);
                 console.log(playerData);
                 return playerData;
             } else if (playerData.length >= 21) { // Waiver
@@ -511,6 +513,8 @@
         },
 
         // Pitching
+        // through season 33
+        // updated 6 May 2015
         WHIP: { // Adj. Rsq: 0.2701603
             Intercept  :  2.2983046294,
             CT         : -0.0048458610,
@@ -518,13 +522,14 @@
             'RH.1'     : -0.0036916877,
             GB         : -0.0008673665
         },
-        SOBB: { // Adj. Rsq: 0.394486
-            Intercept  : -0.796073708,
-            CT         :  0.026859967,
-            'LH.1'     :  0.005046350,
-            'RH.1'     :  0.004983520,
-            VE         :  0.006553650,
-            P4         :  0.001688970
+        SOBB: { // Adj. Rsq: 0.2686018
+            Intercept   : 0.202088707,
+            CT          : 0.022807616,
+            'LH.1'      : 0.002802990,
+            'RH.1'      : 0.006175257,
+            VE          : 0.004598575,
+            P1          :-0.006449872,
+            P3          :-0.001256710
         },
         OPS: { // Adj. Rsq: 0.2992437
             Intercept  :  1.1699163374,
@@ -534,15 +539,32 @@
             GB         : -0.0006109197,
             P2         : -0.0005866027
         },
-        FIP: { // Adj. Rsq: 0.329838
-            Intercept  :  8.142510103,
-            CT         : -0.017614453,
-            'LH.1'     : -0.010785826,
-            'RH.1'     : -0.016656345,
-            VE         : -0.002768150,
-            GB         : -0.007942627,
-            P1         :  0.007535767,
-            P2         : -0.005108849,
+        OBP_P: { // Adj. Rsq: 0.2009084
+            Intercept  :  0.4432241,
+            CT         : -0.0006092,
+            'LH.1'     : -0.0003303,
+            'RH.1'     : -0.0007426
+        },
+        FIP: { // Adj. Rsq: 0.16698
+            Intercept  :  7.374304257,
+            CT         : -0.014392824,
+            'LH.1'     : -0.005339397,
+            'RH.1'     : -0.018474731,
+            VE         : -0.001204787,
+            GB         : -0.004584201,
+            P1         :  0.008514540,
+            P2         : -0.003918957,
+            P5         :  0.003263826
+        },
+        WAR: { // Adjusted R-squared:  0.2792
+            Intercept : -3.277400,
+            ST        : 0.018558,
+            CT        : 0.026723,
+            'LH.1'    : 0.014728,
+            'RH.1'    : 0.033864,
+            GB        : 0.006769,
+            P1        : -0.021490,
+            P4        : 0.006437
         }
     }
 
