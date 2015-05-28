@@ -299,7 +299,7 @@
     // Trades = Player, Lvl, Pos, %, Age
     // Am Draft = Rnk, Player, Pos, B, T, Age
 
-    // Try to return in format: Player, Pos, Age
+    // Try to return in format: Player, Pos, Age, Dur, Health
     // swap position in array: list[x] = [list[y],list[y]=list[x]][0]
 
     function cleanUpValues(playerData) {
@@ -332,9 +332,17 @@
         else if (posArr.indexOf(playerData[2]) > -1) {
             // //Am Draft
             if (/^\d+$/.test(playerData[0])) {
-                playerData.splice(0,1);
-                // playerData.splice(2,1);
-                console.log(playerData);
+                console.log('before', playerData);
+                // check for pitchers
+                if (playerData[2] == 'P') {
+                    playerData.splice(0,1);
+                    playerData.splice(2,1);
+
+                } else {  // batters
+                    playerData.splice(0,1);
+                    // playerData.splice(2,1);
+                }
+                console.log('after', playerData);
                 return playerData;
             } else if (playerData.length >= 21) { // Waiver
                 playerData.splice(1,1);  // remove %
