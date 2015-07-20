@@ -82,6 +82,7 @@
                     <th class="tg-header">OPS</th>
                     <th class="tg-header">SecA</th>
                     <th class="tg-header">RC</th>
+                    <th class="tg-header">FRAA</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -186,7 +187,8 @@
     function populateTable(data, type) {
         // data is an array of arrays
         // Find a <table> element with id="myTable":
-        var table = document.getElementById(type + "Table").tBodies[0];
+        var table = document.getElementById(type + "Table").tBodies[0],
+            hasFieldingData = ['1B', '2B', '3B', 'SS', 'LF', 'RF', 'CF'];
         // loop through formatted data
         data.forEach(
             function(player, ind) { // player is an array of values
@@ -202,6 +204,14 @@
                     row.insertCell(7).innerHTML = roundy(parseFloat(row.cells[5].innerHTML) + parseFloat(row.cells[6].innerHTML), 3);
                     row.insertCell(8).innerHTML = roundy(predict(player, 'SecA'), 3);
                     row.insertCell(9).innerHTML = roundy(predict(player, 'RC'), 1);
+                    // check for fielding types
+                    if (hasFieldingData.indexOf(player[1]) != -1) {
+                        row.insertCell(10).innerHTML = roundy(predict(player, 'FRAA'+'_'+player[1]), 3);
+                    }
+                    // if not insert -999
+                    else {
+                        row.insertCell(10).innerHTML = -999;
+                    }
                 } else { // pitching
                     row.insertCell(4).innerHTML = player[5];
                     row.insertCell(5).innerHTML = roundy(predict(player, 'FIP'), 2);
@@ -241,6 +251,18 @@
                     break;
                 case 'SP':
                     predValue += data[stat].SP * parseInt(playerData[10]);
+                    break;
+                case 'RA':
+                    predValue += data[stat].RA * parseInt(playerData[11]);
+                    break;
+                case 'GL':
+                    predValue += data[stat].GL * parseInt(playerData[12]);
+                    break;
+                case 'AS':
+                    predValue += data[stat].AS * parseInt(playerData[13]);
+                    break;
+                case 'AA':
+                    predValue += data[stat].AA * parseInt(playerData[14]);
                     break;
                 // pitching
                 case 'ST':
@@ -518,6 +540,59 @@
             BE         :    0.3954458,
             SP         :    0.2665498,
             DU         :    0.5883959
+        },
+
+        // Fielding
+        // based on season 32
+        // updated 20 July 2015
+        FRAA_1B: {
+            Intercept:  -7.313661381,
+            RA:   0.084066549,
+            GL:   0.025915821,
+            AS:  -0.014542857,
+            AA:   0.064381159
+        },
+        FRAA_2B: {
+            Intercept: -16.645172578,
+            RA:   0.115619109,
+            GL:   0.073711155,
+            AS:  -0.007026284,
+            AA:   0.043609172
+        },
+        FRAA_3B: {
+            Intercept: -22.832419649,
+            RA:   0.188079293,
+            GL:   0.063624833,
+            AS:  -0.097179191,
+            AA:   0.171689426
+        },
+        FRAA_CF: {
+            Intercept: -26.709673907,
+            RA:   0.205962190,
+            GL:   0.145470286,
+            AS:  -0.095102836,
+            AA:   0.063140236
+        },
+        FRAA_LF: {
+            Intercept: -13.254810429,
+            RA:   0.080529509,
+            GL:   0.098261402,
+            AS:  -0.001636191,
+            AA:   0.048596361
+        },
+        FRAA_RF: {
+            Intercept:  -6.794569580,
+            RA:   0.089876051,
+            GL:   0.045038997,
+            AS:  -0.013053855,
+            AA:  -0.007187861
+        },
+        FRAA_SS: {
+            Intercept: -46.143598127,
+            RA:   0.106479194,
+            GL:   0.167149623,
+            AS:   0.156998215,
+            AA:   0.127245404
         },
 
         // Pitching
