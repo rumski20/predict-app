@@ -76,11 +76,8 @@
                     <th class="tg-header">Dur</th>
                     <th class="tg-header">Health</th>
                     <!-- <th class="tg-header">AB</th> -->
-                    <th class="tg-header">AVG</th>
-                    <th class="tg-header">OBP</th>
-                    <th class="tg-header">SLG</th>
+                    <th class="tg-header">wOBA</th>
                     <th class="tg-header">OPS</th>
-                    <th class="tg-header">SecA</th>
                     <th class="tg-header">RC</th>
                     <th class="tg-header">FRAA</th>
                 </tr>
@@ -198,20 +195,18 @@
                 row.insertCell(2).innerHTML = player[3];
                 row.insertCell(3).innerHTML = player[4];
                 if (type == 'bat') {
-                    row.insertCell(4).innerHTML = roundy(predict(player, 'AVG'), 3);
-                    row.insertCell(5).innerHTML = roundy(predict(player, 'OBP'), 3);
-                    row.insertCell(6).innerHTML = roundy(predict(player, 'SLG'), 3);
-                    row.insertCell(7).innerHTML = roundy(parseFloat(row.cells[5].innerHTML) + parseFloat(row.cells[6].innerHTML), 3);
-                    row.insertCell(8).innerHTML = roundy(predict(player, 'SecA'), 3);
-                    row.insertCell(9).innerHTML = roundy(predict(player, 'RC'), 1);
+                    row.insertCell(4).innerHTML = roundy(predict(player, 'wOBA'), 3);
+                    row.insertCell(5).innerHTML = roundy(predict(player, 'OBP') + predict(player, 'SLG'), 3);
+                    row.insertCell(6).innerHTML = roundy(predict(player, 'RC'), 1);
                     // check for fielding types
                     if (hasFieldingData.indexOf(player[1]) != -1) {
-                        row.insertCell(10).innerHTML = roundy(predict(player, 'FRAA'+'_'+player[1]), 3);
+                        row.insertCell(7).innerHTML = roundy(predict(player, 'FRAA'+'_'+player[1]), 3);
                     }
                     // if not insert -999
                     else {
-                        row.insertCell(10).innerHTML = -999;
+                        row.insertCell(7).innerHTML = -999;
                     }
+
                 } else { // pitching
                     row.insertCell(4).innerHTML = player[5];
                     row.insertCell(5).innerHTML = roundy(predict(player, 'FIP'), 2);
@@ -219,7 +214,7 @@
                     row.insertCell(7).innerHTML = roundy(predict(player, 'WAR'), 2);
                 }
             }
-        )
+        );
     }
 
     function predict(playerData, stat) {
@@ -480,7 +475,7 @@
 
 
     // weights driving calculations
-    // Batting updated through season 32, 10-1-2015
+    // Batting updated through season 33, 28-5-2015
     var data = {
         AB: {
             Intercept: 27.1665018,
@@ -499,21 +494,20 @@
             RH           : 0.0004289617,
             BE           : 0.0001952405
         },
-        OBP: { // Rsq: 0.5163727
-            Intercept   : 0.1970634,
-            CN          : 0.0006031644,
-            LH          : 0.0002782980,
-            RH          : 0.0003509777,
-            BE          : 0.0008905244
+        OBP: { // Adj. Rsq: 0.419131
+            Intercept   : 0.2077894,
+            CN          : 0.0004129,
+            LH          : 0.0003272,
+            RH          : 0.0003850,
+            BE          : 0.0008706
         },
-        SLG: { // Rsq: 0.6481326
-            Intercept   : 0.0929444496,
-            CN          : 0.0007277518,
-            PW          : 0.0028044436,
-            LH          : 0.0006401743,
-            RH          : 0.0007081741,
-            BE          : 0.0003776163,
-            SP          : 0.0004331909
+        SLG: { // Adj. Rsq: 0.5416537
+            Intercept   : 0.1539243,
+            CN          : 0.0004067,
+            PW          : 0.0023253,
+            LH          : 0.0005591,
+            RH          : 0.0009611,
+            BE          : 0.0003050
         },
         ISO: { // Rsq: 0.7757063
             Intercept  : -0.0864614447,
@@ -531,16 +525,32 @@
             BE         :  0.0015210492,
             SP         :  0.0008601810
         },
-        RC: {  // Rsq: 0.5299413
-            Intercept  : -113.9833290,
-            CN         :    0.4938149,
-            PW         :    0.4891483,
-            LH         :    0.2271922,
-            RH         :    0.2816190,
-            BE         :    0.3954458,
-            SP         :    0.2665498,
-            DU         :    0.5883959
+        RC: {  // Adj. Rsq: 0.4026541
+            Intercept  :   -70.0391,
+            CN         :    0.3414,
+            PW         :    0.4296,
+            LH         :    0.2728,
+            RH         :    0.4595,
+            BE         :    0.3133,
+            BR         :    0.1922,
+            SP         :    0.1616
         },
+        wOBA: {  // Adj. Rsq: 0.4558529
+            Intercept  :    0.1560889,
+            CN         :    0.0002911,
+            PW         :    0.0005640,
+            LH         :    0.0003288,
+            RH         :    0.0004545,
+            BE         :    0.0005360
+        },
+        // wRAA: {  // Adj. Rsq: 0.3975795
+        //     Intercept  :    -53.88370,
+        //     CN         :    0.13035,
+        //     PW         :    0.24693,
+        //     LH         :    0.07446,
+        //     RH         :    0.16203,
+        //     BE         :    0.23121
+        // },
 
         // Fielding
         // based on season 32
