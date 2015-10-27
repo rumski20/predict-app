@@ -204,7 +204,7 @@
                     }
                     // if not insert -999
                     else {
-                        row.insertCell(7).innerHTML = -999;
+                        row.insertCell(7).innerHTML = 0.00;
                     }
 
                 } else { // pitching
@@ -322,7 +322,7 @@
     function cleanUpValues(playerData) {
         var levelArr = ['RL','LoA','HiA','AA','AAA','ML'],
             posArr = ['C','1B','2B','SS','3B','LF','CF','RF','DH','P'];
-        console.log(playerData);
+        console.log('before', playerData);
         // check for GM office
         if (/\d{2}/.test(playerData[1])) {
             playerData[2] = [playerData[1], playerData[1] = playerData[2]][0];
@@ -367,7 +367,7 @@
                 console.log(playerData);
                 return playerData;
             } else {  // FA, trades
-                playerData.splice(1,1);  // remove frn
+                playerData.splice(1,2);  // remove frn, fatigue
                 console.log(playerData);
                 return playerData;
             }
