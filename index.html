@@ -350,15 +350,8 @@
             // //Am Draft
             if (/^\d+$/.test(playerData[0])) {
                 console.log('before', playerData);
-                // check for pitchers
-                if (playerData[2] == 'P') {
-                    playerData.splice(0,1);
-                    playerData.splice(2,1);
-
-                } else {  // batters
-                    playerData.splice(0,1);
-                    // playerData.splice(2,1);
-                }
+                playerData.splice(0,1);
+                playerData.splice(2,2);
                 console.log('after', playerData);
                 return playerData;
             } else if (playerData.length >= 21) { // Waiver
