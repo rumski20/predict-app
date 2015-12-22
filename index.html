@@ -76,9 +76,11 @@
                     <th class="tg-header">Dur</th>
                     <th class="tg-header">Health</th>
                     <!-- <th class="tg-header">AB</th> -->
+                    <th class="tg-header">AVG</th>
+                    <th class="tg-header">OBP</th>
+                    <th class="tg-header">SLG</th>
                     <th class="tg-header">wOBA</th>
-                    <th class="tg-header">OPS</th>
-                    <th class="tg-header">RC</th>
+                    <th class="tg-header">wRAA</th>
                     <th class="tg-header">FRAA</th>
                 </tr>
             </thead>
@@ -99,6 +101,7 @@
                     <th class="tg-header">Health</th>
                     <th class="tg-header">Stamina</th>
                     <!-- <th class="tg-header">OBP</th> -->
+                    <th class="tg-header">OBP</th>
                     <th class="tg-header">FIP</th>
                     <th class="tg-header">SO/BB</th>
                     <th class="tg-header">WAR</th>
@@ -195,23 +198,28 @@
                 row.insertCell(2).innerHTML = player[3];
                 row.insertCell(3).innerHTML = player[4];
                 if (type == 'bat') {
-                    row.insertCell(4).innerHTML = roundy(predict(player, 'wOBA'), 3);
-                    row.insertCell(5).innerHTML = roundy(predict(player, 'OBP') + predict(player, 'SLG'), 3);
-                    row.insertCell(6).innerHTML = roundy(predict(player, 'RC'), 1);
+                    row.insertCell(4).innerHTML = roundy(predict(player, 'AVG'), 3);
+                    row.insertCell(5).innerHTML = roundy(predict(player, 'OBP'), 3);
+                    row.insertCell(6).innerHTML = roundy(predict(player, 'SLG'), 3);
+                    row.insertCell(7).innerHTML = roundy(predict(player, 'wOBA'), 3);
+                    // wRAA = wOBA - leagueOBA(0.3) / 1 * PA
+                    row.insertCell(8).innerHTML = roundy((predict(player, 'wOBA') - 0.3) / 1 * predict(player, 'PA'), 2);
                     // check for fielding types
                     if (hasFieldingData.indexOf(player[1]) != -1) {
-                        row.insertCell(7).innerHTML = roundy(predict(player, 'FRAA'+'_'+player[1]), 3);
+                        row.insertCell(9).innerHTML = roundy(predict(player, 'FRAA'+'_'+player[1]), 3);
                     }
                     // if not insert -999
                     else {
-                        row.insertCell(7).innerHTML = 0.00;
+                        row.insertCell(9).innerHTML = 0.00;
                     }
 
                 } else { // pitching
                     row.insertCell(4).innerHTML = player[5];
-                    row.insertCell(5).innerHTML = roundy(predict(player, 'FIP'), 2);
-                    row.insertCell(6).innerHTML = roundy(predict(player, 'SOBB'), 2);
-                    row.insertCell(7).innerHTML = roundy(predict(player, 'WAR'), 2);
+                    row.insertCell(5).innerHTML = roundy(predict(player, 'OBP_P'), 3);
+                    row.insertCell(6).innerHTML = roundy(predict(player, 'FIP'), 2);
+                    row.insertCell(7).innerHTML = roundy(predict(player, 'SOBB'), 2);
+                    // WAR = Mystery variable * IP / 9
+                    row.insertCell(8).innerHTML = roundy(predict(player, 'Myst') * predict(player, 'IP') / 9, 2);
                 }
             }
         );
@@ -468,7 +476,8 @@
 
 
     // weights driving calculations
-    // Batting updated through season 33, 28-5-2015
+    // Batting updated through season 35, 18-12-2015
+    // Pitching updated through
     var data = {
         AB: {
             Intercept: 27.1665018,
@@ -480,27 +489,28 @@
             DU: 1.1555163,
             HE: 0.9948427
         },
-        AVG: { // Rsq: 0.3395178
-            Intercept  : 0.1701399467,
-            CN           : 0.0004386879,
-            LH           : 0.0003982051,
-            RH           : 0.0004289617,
-            BE           : 0.0001952405
+        AVG: { // Rsq: 0.3533799
+            Intercept  : 0.1581362634,
+            CN           : 0.0004341834,
+            LH           : 0.0004042473,
+            RH           : 0.0006672963,
+            BE           : 0.0002398527
         },
-        OBP: { // Adj. Rsq: 0.419131
-            Intercept   : 0.2077894,
-            CN          : 0.0004129,
-            LH          : 0.0003272,
-            RH          : 0.0003850,
-            BE          : 0.0008706
+        OBP: { // Adj. Rsq: 0.4686873
+            Intercept : 0.2056140966,
+            CN          : 0.0005590442,
+            LH          : 0.0003101136,
+            RH          : 0.0005344016,
+            BE          : 0.0009258563
         },
-        SLG: { // Adj. Rsq: 0.5416537
-            Intercept   : 0.1539243,
-            CN          : 0.0004067,
-            PW          : 0.0023253,
-            LH          : 0.0005591,
-            RH          : 0.0009611,
-            BE          : 0.0003050
+        SLG: { // Adj. Rsq: 0.5700742
+            Intercept : 0.0763244074,
+            CN          : 0.0007170312,
+            PW          : 0.0025864526,
+            LH          : 0.0006021329,
+            RH          : 0.0009825879,
+            BE          : 0.0003485301,
+            SP          : 0.0004238164
         },
         ISO: { // Rsq: 0.7757063
             Intercept  : -0.0864614447,
@@ -528,22 +538,18 @@
             BR         :    0.1922,
             SP         :    0.1616
         },
-        wOBA: {  // Adj. Rsq: 0.4558529
-            Intercept  :    0.1560889,
-            CN         :    0.0002911,
-            PW         :    0.0005640,
-            LH         :    0.0003288,
-            RH         :    0.0004545,
-            BE         :    0.0005360
+        wOBA: {  // Adj. Rsq: 0.4732
+            Intercept  :    0.1767736,
+            CN         :    0.0005862,
+            PW         :    0.0005465,
+            LH         :    0.0004020,
+            RH         :    0.0006572,
+            BE         :    0.0007449
         },
-        // wRAA: {  // Adj. Rsq: 0.3975795
-        //     Intercept  :    -53.88370,
-        //     CN         :    0.13035,
-        //     PW         :    0.24693,
-        //     LH         :    0.07446,
-        //     RH         :    0.16203,
-        //     BE         :    0.23121
-        // },
+        PA: { // Adj. Rsq: 0.04194
+            Intercept:    125.490,
+            DU:           3.282
+        },
 
         // Fielding
         // based on season 32
@@ -591,8 +597,8 @@
         },
 
         // Pitching
-        // through season 33
-        // updated 6 May 2015
+        // through season 36
+        // updated 21 December 2015
         WHIP: { // Adj. Rsq: 0.2701603
             Intercept  :  2.2983046294,
             CT         : -0.0048458610,
@@ -600,14 +606,12 @@
             'RH.1'     : -0.0036916877,
             GB         : -0.0008673665
         },
-        SOBB: { // Adj. Rsq: 0.2686018
-            Intercept   : 0.202088707,
-            CT          : 0.022807616,
-            'LH.1'      : 0.002802990,
-            'RH.1'      : 0.006175257,
-            VE          : 0.004598575,
-            P1          :-0.006449872,
-            P3          :-0.001256710
+        SOBB: { // Adj. Rsq: 0.2675401
+            Intercept : -0.809813907,
+            CT         :  0.026123818,
+            'LH.1'     :  0.005924356,
+            VE         :  0.004744967,
+            P2         :  0.004261623
         },
         OPS: { // Adj. Rsq: 0.2992437
             Intercept  :  1.1699163374,
@@ -617,22 +621,23 @@
             GB         : -0.0006109197,
             P2         : -0.0005866027
         },
-        OBP_P: { // Adj. Rsq: 0.2009084
-            Intercept  :  0.4432241,
-            CT         : -0.0006092,
-            'LH.1'     : -0.0003303,
-            'RH.1'     : -0.0007426
+        OBP_P: { // Adj. Rsq: 0.2332405
+            Intercept :  0.5045304457,
+            CT         : -0.0008187554,
+            'LH.1'     : -0.0004059233,
+            'RH.1'     : -0.0007693836,
+            GB         : -0.0001245376,
+            P2         : -0.0002951921
         },
-        FIP: { // Adj. Rsq: 0.16698
-            Intercept  :  7.374304257,
-            CT         : -0.014392824,
-            'LH.1'     : -0.005339397,
-            'RH.1'     : -0.018474731,
-            VE         : -0.001204787,
-            GB         : -0.004584201,
-            P1         :  0.008514540,
-            P2         : -0.003918957,
-            P5         :  0.003263826
+        FIP: { // Adj. Rsq: 0.2622198
+            Intercept :  9.641891301,
+            CT          : -0.021952599,
+            'LH.1'      : -0.006607360,
+            'RH.1'      : -0.018305550,
+            VE          : -0.004048627,
+            GB          : -0.007336200,
+            P1          : -0.006770717,
+            P2          : -0.005061989
         },
         WAR: { // Adjusted R-squared:  0.2792
             Intercept : -3.277400,
@@ -643,6 +648,21 @@
             GB        : 0.006769,
             P1        : -0.021490,
             P4        : 0.006437
+        },
+        IP: { // Adj. R-Squared: 0.3942
+            Intercept : -17.8864,
+            ST        :   1.8042,
+            DU        :   0.5456
+        },
+        Myst: { // Adj. R-Squared: 0.2650855
+            Intercept : -0.3323867071,
+            CT          :  0.0021321728,
+            'LH.1'      :  0.0006779605,
+            'RH.1'      :  0.0017628396,
+            VE          :  0.0004011797,
+            GB          :  0.0007144307,
+            P1          :  0.0006197643,
+            P2          :  0.0004922408
         }
     }
 
