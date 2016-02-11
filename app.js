@@ -215,7 +215,7 @@ function clearTable(type) {
 // swap position in array: list[x] = [list[y],list[y]=list[x]][0]
 
 function cleanUpValues(playerData) {
-    var levelArr = ['RL','LoA','HiA','AA','AAA','ML'],
+    var levelArr = ['RL','LoA','HiA','AA','AAA','ML','---'],
         posArr = ['C','1B','2B','SS','3B','LF','CF','RF','DH','P'];
     console.log('before', playerData);
     // check for GM office

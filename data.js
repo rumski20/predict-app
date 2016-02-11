@@ -76,48 +76,45 @@ var data = {
     },
 
     // Fielding
-    // based on season 32
-    // updated 2 August 2015, removing negatives
-    FRAA_1B: {
-        Intercept: -7.262478039,
-        RA:  0.078686731,
-        GL:  0.028588464,
-        AA:  0.051995754
+    // based on season 35-36
+    // updated 5 Feb 2016, no negatives
+    FRAA_1B: {  // Adjusted R-squared:  0.5519
+        Intercept   : -8.27449,
+        RA          :  0.05661,
+        GL          :  0.08133,
+        AS          :  0.03819
     },
-    FRAA_2B: {
-        Intercept: -16.495849217,
-        RA:  0.113085273,
-        GL:  0.075139638,
-        AA:  0.036048123
+    FRAA_2B: {  // Adjusted R-squared:  0.5106
+        Intercept : -18.97386,
+        RA : 0.11102,
+        GL : 0.07485,
+        AA : 0.07550
     },
-    FRAA_3B: {
-        Intercept: -22.817594314,
-        RA:  0.124355881,
-        GL:  0.104080464,
-        AA:  0.092524256
+    FRAA_3B: {  // Adjusted R-squared:  0.653
+        Intercept: -27.1442,
+        RA:  0.2399,
+        GL:  0.1223
     },
-    FRAA_CF: {
-        Intercept: -24.49521038,
-        RA:  0.18569431,
-        GL:  0.11925693
+    FRAA_CF: {  // Adjusted R-squared:  0.4758
+        Intercept: -24.2052,
+        RA:  0.1533,
+        GL:  0.1466
     },
-    FRAA_LF: {
-        Intercept: -13.263890710,
-        RA:  0.079796094,
-        GL:  0.098701325,
-        AA:  0.047541078
+    FRAA_LF: {  // Adjusted R-squared:  0.673
+        Intercept: -11.8359,
+        RA:  0.1076,
+        GL:  0.0769
     },
-    FRAA_RF: {
-        Intercept: -7.75169282,
-        RA:  0.08370875,
-        GL:  0.04691360,
+    FRAA_RF: {  // Adjusted R-squared:  0.4581
+        Intercept: -4.48009,
+        RA:  0.04736,
+        GL:  0.03177
     },
-    FRAA_SS: {
-        Intercept: -46.143598127,
-        RA:   0.106479194,
-        GL:   0.167149623,
-        AS:   0.156998215,
-        AA:   0.127245404
+    FRAA_SS: {  // Adjusted R-squared:  0.765
+        Intercept: -74.0116,
+        RA:   0.2501,
+        GL:   0.2660,
+        AA:   0.3659
     },
 
     // Pitching
