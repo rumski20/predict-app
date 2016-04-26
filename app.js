@@ -102,7 +102,7 @@ function populateTable(data, type) {
 
             } else { // pitching
                 row.insertCell(4).innerHTML = player[5];
-                row.insertCell(5).innerHTML = roundy(predict(player, 'OBP_P'), 3);
+                row.insertCell(5).innerHTML = roundy(predict(player, 'WHIP'), 2);
                 row.insertCell(6).innerHTML = roundy(predict(player, 'FIP'), 2);
                 row.insertCell(7).innerHTML = roundy(predict(player, 'SOBB'), 2);
                 // WAR = Mystery variable * IP / 9
