@@ -90,7 +90,8 @@ function populateTable(data, type) {
                 row.insertCell(6).innerHTML = roundy(predict(player, 'SLG'), 3);
                 row.insertCell(7).innerHTML = roundy(predict(player, 'wOBA'), 3);
                 // wRAA = wOBA - leagueOBA(0.3) / 1 * PA
-                row.insertCell(8).innerHTML = roundy((predict(player, 'wOBA') - 0.3) / 1 * predict(player, 'PA'), 2);
+                // row.insertCell(8).innerHTML = roundy((predict(player, 'wOBA') - 0.3) / 1 * predict(player, 'PA'), 2);
+                row.insertCell(8).innerHTML = roundy(predict(player, 'nSB'), 2);
                 // check for fielding types
                 if (hasFieldingData.indexOf(player[1]) != -1) {
                     row.insertCell(9).innerHTML = roundy(predict(player, 'FRAA'+'_'+player[1]), 3);

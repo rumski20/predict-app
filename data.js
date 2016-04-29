@@ -1,6 +1,5 @@
 // weights driving calculations
-// Batting updated through season 36, 28-1-2016
-// Pitching updated through
+// Batting updated through season 37, 28-4-2016
 var data = {
     AB: {
         Intercept: 27.1665018,
@@ -12,28 +11,30 @@ var data = {
         DU: 1.1555163,
         HE: 0.9948427
     },
-    AVG: { // Rsq: 0.3676058
-        Intercept   : 0.1611460568,
-        CN          : 0.0004299073,
-        LH          : 0.0003543425,
-        RH          : 0.0006718759,
-        BE          : 0.0002410961
+    AVG: { // Adj. Rsq: 0.3575317
+        Intercept   : 0.1620846067,
+        CN          : 0.0004312059,
+        LH          : 0.0003559298,
+        RH          : 0.0006559203,
+        BE          : 0.0002364026,
     },
-    OBP: { // Adj. Rsq: 0.4748
-        Intercept :  0.1885,
-        CN        :  0.0005356,
-        LH        :  0.0002549,
-        RH        :  0.0005158,
-        BE        :  0.0009548
+    OBP: { // Adj. Rsq: 0.4866609
+        Intercept   : 0.1963770,
+        CN          : 0.0005535415,
+        PW          :-0.00006614409,
+        LH          : 0.0002749832,
+        RH          : 0.0005297580,
+        BE          : 0.0009446189,
+        BR          :-0.0001210355
     },
-    SLG: { // Adj. Rsq: 0.6103
-        Intercept   : 0.08013,
-        CN          : 0.0007342,
-        PW          : 0.002496,
-        LH          : 0.0006226,
-        RH          : 0.0009841,
-        BE          : 0.0003838,
-        SP          : 0.0004009
+    SLG: { // Adj. Rsq: 0.6106303
+        Intercept : 0.0848563497,
+        CN        : 0.0006702079,
+        PW        : 0.0025344223,
+        LH        : 0.0005559412,
+        RH        : 0.0009695111,
+        BE        : 0.0004015456,
+        SP        : 0.0004014280
     },
     ISO: { // Rsq: 0.7757063
         Intercept  : -0.0864614447,
@@ -61,60 +62,67 @@ var data = {
         BR         :    0.1922,
         SP         :    0.1616
     },
-    wOBA: {  // Adj. Rsq: 0.5372
-        Intercept   : 0.1249,
-        CN          : 0.0004548,
-        PW          : 0.0006621,
-        LH          : 0.0003043,
-        RH          : 0.0005211,
-        BE          : 0.0005797,
-        SP          : 0.0001070,
+    wOBA: {  // Adj. Rsq: 0.5370736
+        Intercept  : 0.1228075,
+        CN         : 0.0004152198,
+        PW         : 0.0005828058,
+        LH         : 0.0002614723,
+        RH         : 0.0004729301,
+        BE         : 0.0005766786,
+        BR         :-0.00009132862,
+        SP         : 0.00009592371
     },
     PA: { // Adj. Rsq: 0.04403
         Intercept:    157.2795,
         DU:           3.5055
     },
+    nSB: {
+        Intercept :-14.964459,
+        BR          :  0.148862,
+        SP          :  0.189020
+    },
 
     // Fielding
-    // based on season 35-36
-    // updated 5 Feb 2016, no negatives
-    FRAA_1B: {  // Adjusted R-squared:  0.5519
-        Intercept   : -8.27449,
-        RA          :  0.05661,
-        GL          :  0.08133,
-        AS          :  0.03819
+    // based on season 35-37
+    // updated 30 April 2016, no negatives
+    FRAA_1B: {  // Adjusted R-squared:  0.5737
+        Intercept   : -7.78599,
+        RA          :  0.06803,
+        GL          :  0.07241,
+        AS          :  0.02541
     },
-    FRAA_2B: {  // Adjusted R-squared:  0.5106
-        Intercept : -18.97386,
-        RA : 0.11102,
-        GL : 0.07485,
-        AA : 0.07550
+    FRAA_2B: {  // Adjusted R-squared:  0.3616
+        Intercept :   -19.60084,
+        RA        :     0.09624,
+        GL        :     0.08616,
+        AA        :     0.08933
     },
-    FRAA_3B: {  // Adjusted R-squared:  0.653
-        Intercept: -27.1442,
-        RA:  0.2399,
-        GL:  0.1223
+    FRAA_3B: {  // Adjusted R-squared:  0.6628
+        Intercept: -28.10122,
+        RA:  0.04943,
+        GL:  0.21999,
+        AS:  0.10496
     },
-    FRAA_CF: {  // Adjusted R-squared:  0.4758
-        Intercept: -24.2052,
-        RA:  0.1533,
-        GL:  0.1466
+    FRAA_CF: {  // Adjusted R-squared:  0.5089
+        Intercept: -24.7173,
+        RA:  0.1620,
+        GL:  0.1415
     },
-    FRAA_LF: {  // Adjusted R-squared:  0.673
-        Intercept: -11.8359,
-        RA:  0.1076,
-        GL:  0.0769
+    FRAA_LF: {  // Adjusted R-squared:  0.6823
+        Intercept: -12.01568,
+        RA:  0.10256,
+        GL:  0.08208
     },
-    FRAA_RF: {  // Adjusted R-squared:  0.4581
-        Intercept: -4.48009,
-        RA:  0.04736,
-        GL:  0.03177
+    FRAA_RF: {  // Adjusted R-squared:  0.4636
+        Intercept: -5.01983,
+        RA:  0.04544,
+        GL:  0.04181
     },
-    FRAA_SS: {  // Adjusted R-squared:  0.765
-        Intercept: -74.0116,
-        RA:   0.2501,
-        GL:   0.2660,
-        AA:   0.3659
+    FRAA_SS: {  // Adjusted R-squared:  0.7694
+        Intercept   : -76.77702,
+        RA          :   0.25270,
+        GL          :   0.29552,
+        AA          :   0.36252
     },
 
     // Pitching
