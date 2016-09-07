@@ -250,9 +250,9 @@ function cleanUpValues(playerData) {
             playerData.splice(2,2);
             console.log('after', playerData);
             return playerData;
-        } else if (playerData.length >= 22) { // Waiver
-            playerData.splice(1,1);  // remove %
-            playerData.splice(2,1);
+        } else if (playerData.length >= 21) { // Waiver
+            playerData.splice(1,1);  // remove frn
+            playerData.splice(2,1);  // remove %
             console.log(playerData);
             return playerData;
         } else {  // FA
