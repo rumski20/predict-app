@@ -103,11 +103,12 @@ function populateTable(data, type) {
 
             } else { // pitching
                 row.insertCell(4).innerHTML = player[5];
-                row.insertCell(5).innerHTML = roundy(predict(player, 'WHIP'), 2);
-                row.insertCell(6).innerHTML = roundy(predict(player, 'FIP'), 2);
-                row.insertCell(7).innerHTML = roundy(predict(player, 'SOBB'), 2);
+                row.insertCell(5).innerHTML = roundy(predict(player, 'OPS'), 2);
+                row.insertCell(6).innerHTML = roundy(predict(player, 'WHIP'), 2);
+                row.insertCell(7).innerHTML = roundy(predict(player, 'FIP'), 2);
+                row.insertCell(8).innerHTML = roundy(predict(player, 'SOBB'), 2);
                 // WAR = Mystery variable * IP / 9
-                row.insertCell(8).innerHTML = roundy(predict(player, 'Myst') * predict(player, 'IP') / 9, 2);
+                row.insertCell(9).innerHTML = roundy(predict(player, 'Myst') * predict(player, 'IP') / 9, 2);
             }
         }
     );
