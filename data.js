@@ -82,46 +82,52 @@ var data = {
     },
 
     // Fielding
-    // based on season 35-37
+    // based on season 35-40
     // updated 30 April 2016, no negatives
-    FRAA_1B: {  // Adjusted R-squared:  0.5737
-        Intercept   : -7.78599,
-        RA          :  0.06803,
-        GL          :  0.07241,
-        AS          :  0.02541
+    // changed 10 Feb 2017, inluding negatives now (using rlm with psi.bisquare)
+    FRAA_1B: {  // Adjusted R-squared:  0.7380654
+        Intercept   : -9.0391,
+        RA          :  0.0658,
+        GL          :  0.0815,
+        AS          :  0.0240,
+        AA          :  0.0210
     },
-    FRAA_2B: {  // Adjusted R-squared:  0.3616
-        Intercept :   -19.60084,
-        RA        :     0.09624,
-        GL        :     0.08616,
-        AA        :     0.08933
+    FRAA_2B: {  // Adjusted R-squared:  0.619547
+        Intercept   : -18.8610,
+        RA          :   0.1144,
+        GL          :   0.0689,
+        AA          :   0.0763
     },
-    FRAA_3B: {  // Adjusted R-squared:  0.6628
-        Intercept: -28.10122,
-        RA:  0.04943,
-        GL:  0.21999,
-        AS:  0.10496
+    FRAA_3B: {  // Adjusted R-squared:  0.7382627
+        Intercept   :-29.9776,
+        RA          :  0.0930,
+        GL          :  0.1804,
+        AS          :  0.0607,
+        AA          :  0.0645
     },
-    FRAA_CF: {  // Adjusted R-squared:  0.5089
-        Intercept: -24.7173,
-        RA:  0.1620,
-        GL:  0.1415
+    FRAA_CF: {  // Adjusted R-squared:  0.749331
+        Intercept   : -29.6449,
+        RA          :   0.2144,
+        GL          :   0.1306,
+        AS          :   0.0265
     },
-    FRAA_LF: {  // Adjusted R-squared:  0.6823
-        Intercept: -12.01568,
-        RA:  0.10256,
-        GL:  0.08208
+    FRAA_LF: {  // Adjusted R-squared:  0.7383621
+        Intercept   : -9.8072,
+        RA          :  0.0756,
+        GL          :  0.0643,
+        AA          :  0.0130
     },
-    FRAA_RF: {  // Adjusted R-squared:  0.4636
-        Intercept: -5.01983,
-        RA:  0.04544,
-        GL:  0.04181
+    FRAA_RF: {  // Adjusted R-squared:  0.6406548
+        Intercept   : -6.0905,
+        RA          :  0.0550,
+        GL          :  0.0486
     },
-    FRAA_SS: {  // Adjusted R-squared:  0.7694
-        Intercept   : -76.77702,
-        RA          :   0.25270,
-        GL          :   0.29552,
-        AA          :   0.36252
+    FRAA_SS: {  // Adjusted R-squared:  0.8610982
+        Intercept   : -79.1255,
+        RA          :   0.2799,
+        GL          :   0.3499,
+        AS          :   0.0271,
+        AA          :   0.2832
     },
 
     // Pitching
