@@ -89,16 +89,18 @@ function populateTable(data, type) {
                 row.insertCell(5).innerHTML = roundy(predict(player, 'OBP'), 3);
                 row.insertCell(6).innerHTML = roundy(predict(player, 'SLG'), 3);
                 row.insertCell(7).innerHTML = roundy(predict(player, 'wOBA'), 3);
-                // wRAA = wOBA - leagueOBA(0.3) / 1 * PA
-                // row.insertCell(8).innerHTML = roundy((predict(player, 'wOBA') - 0.3) / 1 * predict(player, 'PA'), 2);
                 row.insertCell(8).innerHTML = roundy(predict(player, 'nSB'), 2);
                 // check for fielding types
                 if (hasFieldingData.indexOf(player[1]) != -1) {
                     row.insertCell(9).innerHTML = roundy(predict(player, 'FRAA'+'_'+player[1]), 3);
+                    // wRAA = wOBA - leagueOBA(0.3) / 1 * PA
+                    // WAR = wRAA + FRAA (+ wSB, but I don't have this yet)
+                    row.insertCell(10).innerHTML = roundy((predict(player, 'wOBA') - 0.3) / 1 * predict(player, 'PA') + predict(player, 'FRAA'+'_'+player[1]), 2);
                 }
                 // if not insert -999
                 else {
                     row.insertCell(9).innerHTML = 0.00;
+                    row.insertCell(10).innerHTML = 0.00;
                 }
 
             } else { // pitching
@@ -141,20 +143,23 @@ function predict(playerData, stat) {
             case 'BE':
                 predValue += data[stat].BE * parseInt(playerData[9]);
                 break;
+            case 'BR':
+                predValue += data[stat].BR * parseInt(playerData[10]);
+                break;
             case 'SP':
-                predValue += data[stat].SP * parseInt(playerData[10]);
+                predValue += data[stat].SP * parseInt(playerData[11]);
                 break;
             case 'RA':
-                predValue += data[stat].RA * parseInt(playerData[11]);
+                predValue += data[stat].RA * parseInt(playerData[12]);
                 break;
             case 'GL':
-                predValue += data[stat].GL * parseInt(playerData[12]);
+                predValue += data[stat].GL * parseInt(playerData[13]);
                 break;
             case 'AS':
-                predValue += data[stat].AS * parseInt(playerData[13]);
+                predValue += data[stat].AS * parseInt(playerData[14]);
                 break;
             case 'AA':
-                predValue += data[stat].AA * parseInt(playerData[14]);
+                predValue += data[stat].AA * parseInt(playerData[15]);
                 break;
             // pitching
             case 'ST':
