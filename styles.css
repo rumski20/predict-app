@@ -48,6 +48,12 @@
     .tg .tg-header {
         background-color: #6200c9
     }
+    td.fld-rating {
+        border-right: 1px solid #aaa;
+    }
+    th.fld-header {
+        padding: 10px 24px;
+    }
 /*    .tg .tg-data {
         background-color: #cbcefb
     }*/

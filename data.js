@@ -196,10 +196,10 @@ var data = {
         P1        : -0.021490,
         P4        : 0.006437
     },
-    IP: { // Adj. R-Squared: 0.6124783
-        Intercept : -17.47651717,
-        ST        :   2.08316956,
-        DU        :   0.51189863
+    IP: { // Adj. R-Squared: 0.6233501
+        Intercept : -14.54597716,
+        ST        :   2.06963011,
+        DU        :   0.51474360
     },
     Myst: { // Adj. R-Squared: 0.3636738
         Intercept   : -0.30430979,
