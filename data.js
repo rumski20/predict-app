@@ -84,53 +84,59 @@ var data = {
     },
 
     // Fielding
-    // based on season 35-40
-    // updated 30 April 2016, no negatives
-    // changed 10 Feb 2017, inluding negatives now (using rlm with psi.bisquare)
-    FRAA_1B: {  // Adjusted R-squared:  0.7380654
-        Intercept   : -9.0391,
-        RA          :  0.0658,
-        GL          :  0.0815,
-        AS          :  0.0240,
-        AA          :  0.0210
+    // based on season 38-42
+    // updated 17 August 2017,
+    // inluding negatives now (using rlm with psi.bisquare)
+    FRAA: {
+        '1B': {  // Adjusted R-squared:  0.7758883
+            Intercept   : -8.7878,
+            RA          :  0.0667,
+            GL          :  0.0801,
+            AS          :  0.0302,
+            AA          :  0.0094
+        },
+        '2B': {  // Adjusted R-squared:  0.6928207
+            Intercept   : -19.8176,
+            RA          :   0.1400,
+            GL          :   0.0469,
+            AS          :   0.0315,
+            AA          :   0.0548
+        },
+        '3B': {  // Adjusted R-squared:  0.7543
+            Intercept   :-32.3242,
+            RA          :  0.1415,
+            GL          :  0.1657,
+            AS          :  0.0124,
+            AA          :  0.1118
+        },
+        CF: {  // Adjusted R-squared:  0.7150831
+            Intercept   : -26.1723,
+            RA          :   0.1888,
+            GL          :   0.1179,
+            AS          :   0.0244
+        },
+        LF: {  // Adjusted R-squared:  0.7534643
+            Intercept   : -9.9378,
+            RA          :  0.0785,
+            GL          :  0.0689,
+            AS          :  0.0058,
+            AA          :  0.0042
+        },
+        RF: {  // Adjusted R-squared:  0.6852
+            Intercept   : -7.8950,
+            RA          :  0.0625,
+            GL          :  0.0542,
+            AS          :  0.0160
+        },
+        SS: {  // Adjusted R-squared:  0.7629
+            Intercept   : -68.5123,
+            RA          :   0.1901,
+            GL          :   0.3603,
+            AS          :   0.0318,
+            AA          :   0.2360
+        }
     },
-    FRAA_2B: {  // Adjusted R-squared:  0.619547
-        Intercept   : -18.8610,
-        RA          :   0.1144,
-        GL          :   0.0689,
-        AA          :   0.0763
-    },
-    FRAA_3B: {  // Adjusted R-squared:  0.7382627
-        Intercept   :-29.9776,
-        RA          :  0.0930,
-        GL          :  0.1804,
-        AS          :  0.0607,
-        AA          :  0.0645
-    },
-    FRAA_CF: {  // Adjusted R-squared:  0.749331
-        Intercept   : -29.6449,
-        RA          :   0.2144,
-        GL          :   0.1306,
-        AS          :   0.0265
-    },
-    FRAA_LF: {  // Adjusted R-squared:  0.7383621
-        Intercept   : -9.8072,
-        RA          :  0.0756,
-        GL          :  0.0643,
-        AA          :  0.0130
-    },
-    FRAA_RF: {  // Adjusted R-squared:  0.6406548
-        Intercept   : -6.0905,
-        RA          :  0.0550,
-        GL          :  0.0486
-    },
-    FRAA_SS: {  // Adjusted R-squared:  0.8610982
-        Intercept   : -79.1255,
-        RA          :   0.2799,
-        GL          :   0.3499,
-        AS          :   0.0271,
-        AA          :   0.2832
-    },
+
 
     // Pitching
     // through season 41
