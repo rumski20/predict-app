@@ -102,18 +102,19 @@ var data = {
             AS          :   0.0315,
             AA          :   0.0548
         },
+        SS: {  // Adjusted R-squared:  0.7629
+            Intercept   : -68.5123,
+            RA          :   0.1901,
+            GL          :   0.3603,
+            AS          :   0.0318,
+            AA          :   0.2360
+        },
         '3B': {  // Adjusted R-squared:  0.7543
             Intercept   :-32.3242,
             RA          :  0.1415,
             GL          :  0.1657,
             AS          :  0.0124,
             AA          :  0.1118
-        },
-        CF: {  // Adjusted R-squared:  0.7150831
-            Intercept   : -26.1723,
-            RA          :   0.1888,
-            GL          :   0.1179,
-            AS          :   0.0244
         },
         LF: {  // Adjusted R-squared:  0.7534643
             Intercept   : -9.9378,
@@ -122,19 +123,18 @@ var data = {
             AS          :  0.0058,
             AA          :  0.0042
         },
+        CF: {  // Adjusted R-squared:  0.7150831
+            Intercept   : -26.1723,
+            RA          :   0.1888,
+            GL          :   0.1179,
+            AS          :   0.0244
+        },
         RF: {  // Adjusted R-squared:  0.6852
             Intercept   : -7.8950,
             RA          :  0.0625,
             GL          :  0.0542,
             AS          :  0.0160
         },
-        SS: {  // Adjusted R-squared:  0.7629
-            Intercept   : -68.5123,
-            RA          :   0.1901,
-            GL          :   0.3603,
-            AS          :   0.0318,
-            AA          :   0.2360
-        }
     },
 
 

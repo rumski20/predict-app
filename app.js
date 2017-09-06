@@ -20,6 +20,39 @@ caretUp.className = "fontawesome-sort-up";
 var caretDown = document.createElement('span');
 caretDown.className = "fontawesome-sort-down";
 
+// laod fielding data into table
+function loadFieldingData() {
+    var fldTable = document.getElementById('fldTable'),
+        fldRatings = ['RA', 'GL', 'AS', 'AA'];
+
+    // loop over fielding ratings
+    for (var i=0; i < fldRatings.length; i++) {
+        var row = fldTable.insertRow(-1); // insert row
+        // insert fld rating cell
+        var ratCell = row.insertCell(0);
+        ratCell.className = 'fld-rating';
+        ratCell.innerHTML = fldRatings[i];
+
+        var c = 1;  //counter
+
+        // loop over positions
+        for (var pos in data.FRAA) {
+            if (data.FRAA.hasOwnProperty(pos)) {
+                if (data.FRAA[pos][fldRatings[i]]){
+                    // calculat percent fld rating has on intercept
+                    var score = (data.FRAA[pos][fldRatings[i]]) /
+                            Math.abs(data.FRAA[pos]['Intercept']) * 10000;
+                    row.insertCell(c).innerHTML = score.toFixed(0) + '%';
+                } else {
+                    row.insertCell(c).innerHTML = '';
+                }
+            }
+            c++;
+        }
+    }
+}
+loadFieldingData();
+
 
 
 
