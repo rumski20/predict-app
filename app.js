@@ -92,10 +92,11 @@ function populateTable(data, type) {
                 row.insertCell(8).innerHTML = roundy(predict(player, 'nSB'), 2);
                 // check for fielding types
                 if (hasFieldingData.indexOf(player[1]) != -1) {
-                    row.insertCell(9).innerHTML = roundy(predict(player, 'FRAA'+'_'+player[1]), 3);
+                    // row.insertCell(9).innerHTML = roundy(predict(player, 'FRAA'+'_'+player[1]), 3);
                     // wRAA = wOBA - leagueOBA(0.3) / 1 * PA
                     // WAR = wRAA + FRAA (+ wSB, but I don't have this yet)
-                    row.insertCell(10).innerHTML = roundy((predict(player, 'wOBA') - 0.3) / 1 * predict(player, 'PA') + predict(player, 'FRAA'+'_'+player[1]), 2);
+                    // row.insertCell(10).innerHTML = roundy((predict(player, 'wOBA') - 0.3) / 1 * predict(player, 'PA') + predict(player, 'FRAA'+'_'+player[1]), 2);
+                    findBestPositions(player, row);
                 }
                 // if not insert -999
                 else {
@@ -116,81 +117,137 @@ function populateTable(data, type) {
     );
 }
 
+// list top three predicted FRAA for player given their fielding ratings
+function findBestPositions(player, row) {
+    var fraaArray = [],
+        startCell = 9;
+    // loop through positions
+    for (var pos in data.FRAA) {
+        if (data.FRAA.hasOwnProperty(pos)) {
+            var prediction = predict(player, pos),
+                modPrediction = getModPrediction(prediction, pos);
+            fraaArray.push([ pos, prediction, modPrediction]);
+        }
+    }
+    // sort FRAA array
+    fraaArray.sort( function(a, b) {
+        return b[2] - a[2];
+    });
+
+    // add top three as cells
+    for (var i = 0; i < 3; i++) {
+        var cellNum = startCell + i,
+            content = fraaArray[i][0] + ': ' + roundy(fraaArray[i][1], 3),
+            cell = row.insertCell(cellNum)
+        cell.innerHTML = content;
+        cell.className = 'fraa-cell';
+    }
+
+    // modify prediction based on defensive spectrum for better sorting
+    // order: SS, 2B, CF, 3B, LF, RF, 1B
+    function getModPrediction(pred, pos) {
+        // list in reverse order to facilitate powers
+        // var defSpecOrder = [
+        //     '1B', 'RF', 'LF', 'CF', '3B', '2B', 'SS'
+        // ];
+        var defSpecMap = {
+            'SS' : 10,
+            '2B' : 5,
+            '3B' : 6,
+            'CF' : 6,
+            'LF' : 3,
+            'RF' : 2,
+            '1B' : 1
+        };
+        // return Math.pow(pred, defSpecMap[pos]);
+        // return pred * ((defSpecOrder.indexOf(pos) + 0.1)/2);
+        return pred + defSpecMap[pos];
+    }
+}
+
 function predict(playerData, stat) {
     console.log(playerData, stat);
-    var predValue = data[stat].Intercept;
-    for (var rating in data[stat]) {
+    var statObj;
+    // check for fielding
+    if (Object.keys(data.FRAA).indexOf(stat) > -1) {
+        statObj = data.FRAA[stat];
+    } else {
+        statObj = data[stat];
+    }
+    var predValue = statObj.Intercept;
+    for (var rating in statObj) {
         switch (rating) {
             // batting
             case 'DU':
-                predValue += data[stat].DU * parseInt(playerData[3]);
+                predValue += statObj.DU * parseInt(playerData[3]);
                 break;
             case 'HE':
-                predValue += data[stat].HE * parseInt(playerData[4]);
+                predValue += statObj.HE * parseInt(playerData[4]);
                 break;
             case 'CN':
-                predValue += data[stat].CN * parseInt(playerData[5]);
+                predValue += statObj.CN * parseInt(playerData[5]);
                 break;
             case 'PW':
-                predValue += data[stat].PW * parseInt(playerData[6]);
+                predValue += statObj.PW * parseInt(playerData[6]);
                 break;
             case 'LH':
-                predValue += data[stat].LH * parseInt(playerData[7]);
+                predValue += statObj.LH * parseInt(playerData[7]);
                 break;
             case 'RH':
-                predValue += data[stat].RH * parseInt(playerData[8]);
+                predValue += statObj.RH * parseInt(playerData[8]);
                 break;
             case 'BE':
-                predValue += data[stat].BE * parseInt(playerData[9]);
+                predValue += statObj.BE * parseInt(playerData[9]);
                 break;
             case 'BR':
-                predValue += data[stat].BR * parseInt(playerData[10]);
+                predValue += statObj.BR * parseInt(playerData[10]);
                 break;
             case 'SP':
-                predValue += data[stat].SP * parseInt(playerData[11]);
+                predValue += statObj.SP * parseInt(playerData[11]);
                 break;
+            // fielding
             case 'RA':
-                predValue += data[stat].RA * parseInt(playerData[12]);
+                predValue += statObj.RA * parseInt(playerData[12]);
                 break;
             case 'GL':
-                predValue += data[stat].GL * parseInt(playerData[13]);
+                predValue += statObj.GL * parseInt(playerData[13]);
                 break;
             case 'AS':
-                predValue += data[stat].AS * parseInt(playerData[14]);
+                predValue += statObj.AS * parseInt(playerData[14]);
                 break;
             case 'AA':
-                predValue += data[stat].AA * parseInt(playerData[15]);
+                predValue += statObj.AA * parseInt(playerData[15]);
                 break;
             // pitching
             case 'ST':
-                predValue += data[stat].ST * parseInt(playerData[5]);
+                predValue += statObj.ST * parseInt(playerData[5]);
                 break;
             case 'CT':
-                predValue += data[stat].CT * parseInt(playerData[6]);
+                predValue += statObj.CT * parseInt(playerData[6]);
                 break;
             case 'LH.1':
-                predValue += data[stat]['LH.1'] * parseInt(playerData[7]);
+                predValue += statObj['LH.1'] * parseInt(playerData[7]);
                 break;
             case 'RH.1':
-                predValue += data[stat]['RH.1'] * parseInt(playerData[8]);
+                predValue += statObj['RH.1'] * parseInt(playerData[8]);
                 break;
             case 'VE':
-                predValue += data[stat].VE * parseInt(playerData[9]);
+                predValue += statObj.VE * parseInt(playerData[9]);
                 break;
             case 'GB':
-                predValue += data[stat].GB * parseInt(playerData[10]);
+                predValue += statObj.GB * parseInt(playerData[10]);
                 break;
             case 'P1':
-                predValue += data[stat].P1 * parseInt(playerData[11]);
+                predValue += statObj.P1 * parseInt(playerData[11]);
                 break;
             case 'P2':
-                predValue += data[stat].P2 * parseInt(playerData[12]);
+                predValue += statObj.P2 * parseInt(playerData[12]);
                 break;
             case 'P3':
-                predValue += data[stat].P3 * parseInt(playerData[13]);
+                predValue += statObj.P3 * parseInt(playerData[13]);
                 break;
             case 'P5':
-                predValue += data[stat].P5 * parseInt(playerData[14]);
+                predValue += statObj.P5 * parseInt(playerData[14]);
                 break;
         }
         console.log(rating, predValue);
@@ -256,7 +313,7 @@ function cleanUpValues(playerData) {
             playerData.splice(2,2);
             console.log('after', playerData);
             return playerData;
-        } else if (playerData.length >= 21) { // Waiver
+        } else if (playerData.length >= 22) { // Waiver
             playerData.splice(1,1);  // remove frn
             playerData.splice(2,1);  // remove %
             console.log(playerData);
