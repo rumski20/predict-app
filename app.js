@@ -118,10 +118,13 @@ function populateTable(data, type) {
             row.insertCell(2).innerHTML = player[3];
             row.insertCell(3).innerHTML = player[4];
             if (type == 'bat') {
-                row.insertCell(4).innerHTML = roundy(predict(player, 'BBr'), 3);
-                row.insertCell(5).innerHTML = roundy(predict(player, 'Kr'), 3);
-                row.insertCell(6).innerHTML = roundy(predict(player, 'wOBA'), 3);
-                row.insertCell(7).innerHTML = roundy(predict(player, 'nSB'), 2);
+                row.insertCell(4).innerHTML = roundy(predict(player, 'AVG'), 3);
+                row.insertCell(5).innerHTML = roundy(predict(player, 'OBP'), 3);
+                row.insertCell(6).innerHTML = roundy(predict(player, 'SLG'), 3);
+                row.insertCell(7).innerHTML = roundy(predict(player, 'BBr'), 3);
+                row.insertCell(8).innerHTML = roundy(predict(player, 'Kr'), 3);
+                row.insertCell(9).innerHTML = roundy(predict(player, 'wOBA'), 3);
+                row.insertCell(10).innerHTML = roundy(predict(player, 'nSB'), 2);
                 // check for fielding types
                 if (hasFieldingData.indexOf(player[1]) != -1) {
                     // row.insertCell(9).innerHTML = roundy(predict(player, 'FRAA'+'_'+player[1]), 3);
@@ -132,8 +135,8 @@ function populateTable(data, type) {
                 }
                 // if not insert -999
                 else {
-                    row.insertCell(8).innerHTML = 0.00;
-                    row.insertCell(9).innerHTML = 0.00;
+                    row.insertCell(11).innerHTML = 0.00;
+                    row.insertCell(12).innerHTML = 0.00;
                 }
 
             } else { // pitching
@@ -152,7 +155,7 @@ function populateTable(data, type) {
 // list top three predicted FRAA for player given their fielding ratings
 function findBestPositions(player, row) {
     var fraaArray = [],
-        startCell = 8;
+        startCell = 11;
     // loop through positions
     for (var pos in data.FRAA) {
         if (data.FRAA.hasOwnProperty(pos)) {
@@ -165,6 +168,18 @@ function findBestPositions(player, row) {
     fraaArray.sort( function(a, b) {
         return b[2] - a[2];
     });
+
+    // add listed position to front of array
+    var currentPos = fraaArray.filter(function(d) {
+            return d[0] == player[1];
+        })[0],
+        tempRay = fraaArray.filter(function(d) {
+            return d != currentPos;
+        });
+    tempRay.unshift(currentPos);
+    fraaArray = tempRay;
+
+
 
     // add top three as cells
     for (var i = 0; i < 3; i++) {

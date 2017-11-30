@@ -11,30 +11,30 @@ var data = {
         DU: 1.1555163,
         HE: 0.9948427
     },
-    AVG: { // Adj. Rsq: 0.4448543
-        Intercept   : 0.15991032,
-        CN          : 0.00044552,
-        PW          : 0.00004453,
-        LH          : 0.00030283,
-        RH          : 0.00063583,
-        BE          : 0.00029140
+    AVG: { // Adj. Rsq: 0.4489628
+        Intercept : 0.15864779,
+        CN          : 0.00046978,
+        PW          : 0.00004207,
+        LH          : 0.00029211,
+        RH          : 0.00062941,
+        BE          : 0.00029689
     },
-    OBP: { // Adj. Rsq: 0.5705425
-        Intercept   : 0.19203210,
-        CN          : 0.00056072,
-        LH          : 0.00024842,
-        RH          : 0.00054111,
-        BE          : 0.00094065,
-        BR          :-0.00009457
+    OBP: { // Adj. Rsq: 0.5767325
+        Intercept   : 0.18884322,
+        CN          : 0.00057948,
+        LH          : 0.00025042,
+        RH          : 0.00053894,
+        BE          : 0.00094870,
+        BR          :-0.00008216
     },
-    SLG: { // Adj. Rsq: 0.7179823
-        Intercept   : 0.09631122,
-        CN          : 0.00061730,
-        PW          : 0.00254660,
-        LH          : 0.00044242,
-        RH          : 0.00101985,
-        BE          : 0.00048622,
-        SP          : 0.00024148
+    SLG: { // Adj. Rsq: 0.7149108
+        Intercept   : 0.09303755,
+        CN          : 0.00066932,
+        PW          : 0.00251972,
+        LH          : 0.00042150,
+        RH          : 0.00101263,
+        BE          : 0.00050695,
+        SP          : 0.00024250
     },
     ISO: { // Rsq: 0.7757063
         Intercept  : -0.0864614447,
@@ -98,56 +98,56 @@ var data = {
     },
 
     // Fielding
-    // based on season 38-42
-    // updated 17 August 2017,
+    // based on season 38-43
+    // updated 29 November 2017,
     // inluding negatives now (using rlm with psi.bisquare)
     FRAA: {
-        '1B': {  // Adjusted R-squared:  0.7758883
-            Intercept   : -8.7878,
-            RA          :  0.0667,
-            GL          :  0.0801,
-            AS          :  0.0302,
-            AA          :  0.0094
+        '1B': {  // Adjusted R-squared:  0.7548135
+            Intercept   : -8.5068,
+            RA          :  0.0689,
+            GL          :  0.0726,
+            AS          :  0.0248,
+            AA          :  0.0122
         },
-        '2B': {  // Adjusted R-squared:  0.6928207
-            Intercept   : -19.8176,
-            RA          :   0.1400,
-            GL          :   0.0469,
-            AS          :   0.0315,
-            AA          :   0.0548
+        '2B': {  // Adjusted R-squared:  0.6933526
+            Intercept  : -20.3113,
+            RA         :   0.1375,
+            GL         :   0.0533,
+            AS         :   0.0358,
+            AA         :   0.0544
         },
-        SS: {  // Adjusted R-squared:  0.7629
-            Intercept   : -68.5123,
-            RA          :   0.1901,
-            GL          :   0.3603,
-            AS          :   0.0318,
-            AA          :   0.2360
+        SS: {  // Adjusted R-squared:  0.7874292
+            Intercept  : -69.4089,
+            RA         :   0.1867,
+            GL         :   0.3799,
+            AS         :   0.0417,
+            AA         :   0.2216
         },
-        '3B': {  // Adjusted R-squared:  0.7543
-            Intercept   :-32.3242,
-            RA          :  0.1415,
-            GL          :  0.1657,
-            AS          :  0.0124,
-            AA          :  0.1118
+        '3B': {  // Adjusted R-squared:  0.7526783
+            Intercept  : -33.0262,
+            RA         :   0.1141,
+            GL         :   0.1797,
+            AS         :   0.0294,
+            AA         :   0.1130
         },
-        LF: {  // Adjusted R-squared:  0.7534643
-            Intercept   : -9.9378,
-            RA          :  0.0785,
-            GL          :  0.0689,
-            AS          :  0.0058,
-            AA          :  0.0042
+        LF: {  // Adjusted R-squared:  0.7397727
+            Intercept  : -10.0955,
+            RA         :   0.0816,
+            GL         :   0.0668,
+            AS         :   0.0055,
+            AA         :   0.0059
         },
-        CF: {  // Adjusted R-squared:  0.7150831
-            Intercept   : -26.1723,
-            RA          :   0.1888,
-            GL          :   0.1179,
-            AS          :   0.0244
+        CF: {  // Adjusted R-squared:  0.7195822
+            Intercept  : -26.3370,
+            RA         :   0.1979,
+            GL         :   0.1107,
+            AS         :   0.0234
         },
-        RF: {  // Adjusted R-squared:  0.6852
-            Intercept   : -7.8950,
-            RA          :  0.0625,
-            GL          :  0.0542,
-            AS          :  0.0160
+        RF: {  // Adjusted R-squared:  0.6711656
+            Intercept   : -8.3893,
+            RA          :  0.0697,
+            GL          :  0.0598,
+            AS          :  0.0113
         },
     },
 
